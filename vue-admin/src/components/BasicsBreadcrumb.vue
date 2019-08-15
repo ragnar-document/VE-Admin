@@ -1,6 +1,9 @@
 <template>
   <div>
-    <el-breadcrumb separator-class="el-icon-arrow-right" v-if="breadcrumbValue.length > 2">
+    <el-breadcrumb
+      separator-class="el-icon-arrow-right"
+      v-if="breadcrumbValue.length > 2"
+    >
       <template v-for="item in breadcrumbValue">
         <el-breadcrumb-item
           v-if="item.to"
@@ -27,9 +30,6 @@ export default {
   },
   data() {
     return {};
-  },
-  created() {
-    console.log(this.breadcrumbValue);
   },
   computed: {
     breadcrumbValue() {

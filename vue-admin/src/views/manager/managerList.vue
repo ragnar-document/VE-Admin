@@ -1,31 +1,29 @@
 <template>
   <div>
-    <div>
-      <h1>管理员列表</h1>
-      </div>
-      <el-table :data="tableData" style="width: 100%">
-        <el-table-column label="id" prop="id"> </el-table-column>
-        <el-table-column label="名字" prop="name"> </el-table-column>
-        <el-table-column label="手机号" prop="phone"> </el-table-column>
-        <el-table-column align="right">
-          <template slot-scope="scope">
-            <el-button size="mini" @click="handleEdit(scope.row)"
-              >编辑</el-button
-            >
-            <el-button
-              size="mini"
-              type="danger"
-              @click="handleDelete(scope)"
-              >删除</el-button
-            >
-          </template>
-        </el-table-column>
-      </el-table>
+    <div style="padding:10px;overflow:hidden;background:#eee">
+      <h1 style="float:left;">管理员列表</h1>
+      <el-button style="float:right;" size="mini" @click="addManager()"
+        >添加管理员</el-button
+      >
+    </div>
+    <el-table :data="tableData" style="width: 100%">
+      <el-table-column label="id" prop="id"> </el-table-column>
+      <el-table-column label="名字" prop="name"> </el-table-column>
+      <el-table-column label="手机号" prop="phone"> </el-table-column>
+      <el-table-column align="right">
+        <template slot-scope="scope">
+          <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+          <el-button size="mini" type="danger" @click="handleDelete(scope)"
+            >删除</el-button
+          >
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 
 <script>
-import managerModel from "./../../model/manager";
+import managerModel from "@/global/service/manager";
 
 export default {
   data() {
@@ -47,18 +45,19 @@ export default {
         this.total = totalNum;
       });
     },
-    handleEdit(scope){
+    addManager() {
+      this.$router.push({ name: "managerAdd" });
+    },
+    handleEdit(scope) {
       let id = scope.id;
       this.$router.push({ name: "managerInfo", params: { id } });
     },
-    handleDelete(scope){
-       let id = scope.row.id;
-       managerModel.delete(id).then(()=>{
-         this.$message.success('删除成功'),
-         this.render()
-       })
+    handleDelete(scope) {
+      let id = scope.row.id;
+      managerModel.delete(id).then(() => {
+        this.$message.success("删除成功"), this.render();
+      });
     }
-
   },
   components: {}
 };

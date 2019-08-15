@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import consumerModel from "./../../model/consumer";
+import consumerModel from "@/global/service/consumer";
 export default {
   data() {
     return {

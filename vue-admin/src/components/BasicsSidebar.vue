@@ -1,6 +1,6 @@
 <template>
-  <el-menu :default-active="path" :router="true">
-    <h1 class="logo"><img src="./../../public/logo.svg" alt=""></h1>
+  <el-menu :router="true">
+    <h1 class="logo"><img src="./../../public/logo.svg" alt="" /></h1>
     <template v-for="route in filterRoutes">
       <el-submenu
         v-if="hasNavChildren(route)"
@@ -91,9 +91,9 @@ export default {
   height: 60px;
   text-align: center;
   color: #fff;
-  background-color: #409EFF;
+  background-color: #409eff;
 }
-.logo img{
-  margin-top: 10px
+.logo img {
+  margin-top: 10px;
 }
 </style>

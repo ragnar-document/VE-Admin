@@ -104,7 +104,9 @@
                     <span>{{ props.row.created_at }}</span>
                   </el-form-item>
                   <el-form-item label="学生详情">
-                    <router-link :to="{ path: `/userInfo/${props.row.id}` }">点击跳转</router-link>
+                    <router-link :to="{ path: `/userInfo/${props.row.id}` }"
+                      >点击跳转</router-link
+                    >
                   </el-form-item>
                 </el-form>
               </template>
@@ -118,7 +120,7 @@
 </template>
 
 <script>
-import classModel from "./../../model/class";
+import classModel from "@/global/service/class";
 
 export default {
   data() {

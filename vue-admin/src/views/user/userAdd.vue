@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import userModel from "./../../model/user";
+import userModel from "@/global/service/user";
 
 export default {
   data() {

@@ -24,7 +24,7 @@
         </el-header>
         <transition name="el-fade-in-linear">
           <el-main class="home-main" v-show="show">
-              <router-view></router-view>
+            <router-view></router-view>
           </el-main>
         </transition>
       </el-container>
@@ -33,12 +33,11 @@
 </template>
 
 <script>
-import router from "./../routes/router";
-import Breadcrumb from "@/components/Breadcrumb.vue";
-import Sidebar from "./Sidebar";
+import Breadcrumb from "./BasicsBreadcrumb.vue";
+import Sidebar from "./BasicsSidebar";
 export default {
   data: () => ({
-    show: false,
+    show: false
   }),
   created() {
     setTimeout(() => {

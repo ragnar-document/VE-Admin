@@ -1,8 +1,10 @@
 <template>
   <div>
-     <div style="padding:10px;overflow:hidden;background:#eee">
+    <div style="padding:10px;overflow:hidden;background:#eee">
       <h1 style="float:left;">用户列表</h1>
-      <el-button style="float:right;" size="mini" @click="addUser">添加新用户</el-button>
+      <el-button style="float:right;" size="mini" @click="addUser"
+        >添加新用户</el-button
+      >
     </div>
     <el-table
       :data="
@@ -26,26 +28,28 @@
           <el-input v-model="search" size="mini" placeholder="输入关键字搜索" />
         </template>
         <template slot-scope="scope">
-          <el-button type="text" size="mini" @click="handleInfo(scope)">详情 </el-button>
-          <el-button type="text" size="mini"  @click="handleDelete(scope)"
+          <el-button type="text" size="mini" @click="handleInfo(scope)"
+            >详情
+          </el-button>
+          <el-button type="text" size="mini" @click="handleDelete(scope)"
             >删除</el-button
           >
         </template>
       </el-table-column>
     </el-table>
-       <el-pagination
-        class="pageItem"
-        layout="prev, pager, next"
-        @current-change="handleCurrentChange"
-        :current-page.sync="currentPage"
-        :total="total"
-      >
-      </el-pagination>
+    <el-pagination
+      class="pageItem"
+      layout="prev, pager, next"
+      @current-change="handleCurrentChange"
+      :current-page.sync="currentPage"
+      :total="total"
+    >
+    </el-pagination>
   </div>
 </template>
 
 <script>
-import userModel from "./../../model/user";
+import userModel from "@/global/service/user";
 
 export default {
   data() {
@@ -54,7 +58,7 @@ export default {
       tableData: [],
       search: "",
       total: 0,
-      loading: true,
+      loading: true
     };
   },
   created() {
@@ -66,13 +70,13 @@ export default {
         this.tableData = res.data.data;
         let totalNum = res.data.pagination.total;
         this.total = totalNum;
-        setTimeout(()=>{
-          this.loading = false
-        },300)
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
       });
     },
-    addUser(){
-      this.$router.push({ name:"userAdd" })
+    addUser() {
+      this.$router.push({ name: "userAdd" });
     },
     handleCurrentChange(e) {
       let pageIndex = e;

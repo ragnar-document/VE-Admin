@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import courseModel from "./../../model/course";
+import courseModel from "@/global/service/course";
 
 export default {
   data() {

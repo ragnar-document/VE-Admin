@@ -31,7 +31,7 @@ const managerInfo = () =>
 const consumer = () =>
   import(/* webpackChunkName: "consumer" */ "@/views/consumer/consumer.vue");
 const Layout = () =>
-  import(/* webpackChunkName: "Layout" */ "@/components/Layout.vue");
+  import(/* webpackChunkName: "Layout" */ "@/components/BasicsLayout.vue");
 
 export default [
   {
@@ -262,10 +262,6 @@ export default [
             name: "managerAdd",
             component: managerAdd,
             meta: {
-              nav: {
-                icon: "el-icon-pie-chart",
-                title: "管理员添加"
-              },
               breadcrumb: {
                 title: "管理员添加"
               }

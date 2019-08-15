@@ -2,7 +2,9 @@
   <div>
     <div style="padding:10px;overflow:hidden;background:#eee">
       <h1 style="float:left;">课程列表</h1>
-      <el-button style="float:right;" size="mini" @click="addCourse">添加班级</el-button>
+      <el-button style="float:right;" size="mini" @click="addCourse"
+        >添加班级</el-button
+      >
     </div>
     <el-table
       :data="
@@ -21,8 +23,12 @@
       <el-table-column label="课程简介" prop="description"> </el-table-column>
       <el-table-column align="right">
         <template slot-scope="scope">
-          <el-button type="text" size="mini" @click="handleEdit(scope)">编辑</el-button>
-          <el-button type="text" size="mini"  @click="handleDelete(scope)">删除</el-button>
+          <el-button type="text" size="mini" @click="handleEdit(scope)"
+            >编辑</el-button
+          >
+          <el-button type="text" size="mini" @click="handleDelete(scope)"
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -30,14 +36,14 @@
 </template>
 
 <script>
-import courseModel from "./../../model/course";
+import courseModel from "@/global/service/course";
 
 export default {
   data() {
     return {
       tableData: [],
       search: "",
-      loading:true
+      loading: true
     };
   },
   created() {
@@ -47,13 +53,13 @@ export default {
     render() {
       courseModel.list().then(res => {
         this.tableData = res.datas;
-        setTimeout(()=>{
-          this.loading = false
-      },300)
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
       });
     },
-    addCourse(){
-      this.$router.push({ name: "courseAdd"})
+    addCourse() {
+      this.$router.push({ name: "courseAdd" });
     },
     handleEdit(scope) {
       let id = scope.row.id;

@@ -2,7 +2,9 @@
   <div>
     <div style="padding:10px;overflow:hidden;background:#eee">
       <h1 style="float:left;">班级列表</h1>
-      <el-button style="float:right;" size="mini" @click="addClass">添加班级</el-button>
+      <el-button style="float:right;" size="mini" @click="addClass"
+        >添加班级</el-button
+      >
     </div>
     <el-table
       :data="
@@ -26,7 +28,9 @@
           <el-input v-model="search" size="mini" placeholder="输入关键字搜索" />
         </template>
         <template slot-scope="scope">
-          <el-button type="text" size="mini" @click="handleEdit(scope)">编辑</el-button>
+          <el-button type="text" size="mini" @click="handleEdit(scope)"
+            >编辑</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -34,21 +38,22 @@
 </template>
 
 <script>
-import classModel from "./../../model/class";
+import classModel from "@/global/service/class";
+
 export default {
   data() {
     return {
       tableData: [],
       search: "",
-      loading:true
+      loading: true
     };
   },
   created() {
-   this.render()
+    this.render();
   },
   methods: {
-    render(){
-       classModel.list().then(res => {
+    render() {
+      classModel.list().then(res => {
         let tableData = res.datas.data;
         tableData.forEach(data => {
           if (data.status == 1) {
@@ -59,12 +64,12 @@ export default {
           }
         });
         this.tableData = tableData;
-        setTimeout(()=>{
-          this.loading = false
-        },200)
+        setTimeout(() => {
+          this.loading = false;
+        }, 200);
       });
     },
-    addClass(){
+    addClass() {
       this.$router.push({ name: "classAdd" });
     },
     handleEdit(scope) {

@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import classModel from "./../../model/class";
+import classModel from "@/global/service/class.js";
 
 export default {
   data() {

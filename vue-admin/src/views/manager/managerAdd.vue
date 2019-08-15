@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import managerModel from "./../../model/manager";
+import managerModel from "@/global/service/manager";
 
 export default {
   data() {

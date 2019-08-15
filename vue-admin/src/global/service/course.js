@@ -1,5 +1,5 @@
-import request from "./request.js";
-import API from "./api.js";
+import request from "./../request/request.js";
+import API from "./../request/api.js";
 
 export default {
   list() {

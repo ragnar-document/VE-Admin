@@ -100,7 +100,9 @@
           <el-table-column prop="start_at" label="开始时间"> </el-table-column>
           <el-table-column prop="end_at" label="结束时间"> </el-table-column>
           <el-table-column
-            ><el-button type="text" @click="skipInfo">详情</el-button></el-table-column
+            ><el-button type="text" @click="skipInfo"
+              >详情</el-button
+            ></el-table-column
           >
         </el-table>
       </el-card>
@@ -121,7 +123,7 @@
 </template>
 
 <script>
-import userModel from "./../../model/user";
+import userModel from "@/global/service/user";
 
 export default {
   data() {
@@ -135,7 +137,7 @@ export default {
         birthday: "",
         sms_name: "",
         sms_phone: "",
-        balance:""
+        balance: ""
       },
       tableData: [],
       paymentTable: []
@@ -147,7 +149,7 @@ export default {
       console.log(res.datas.single);
       this.userForm = res.datas.single[0];
       this.tableData = res.datas.intro;
-      console.log(res.datas.intro)
+      console.log(res.datas.intro);
       let paymentTable = res.datas.payment;
       paymentTable.forEach(data => {
         if (data.status == 1) {
@@ -165,8 +167,8 @@ export default {
     },
     skipInfo() {
       let id = this.tableData[0].course_id;
-      console.log(id)
-      this.$router.push({ name: 'classInfo', params: { id }});
+      console.log(id);
+      this.$router.push({ name: "classInfo", params: { id } });
     },
     editItem() {
       if (this.disabled) {
