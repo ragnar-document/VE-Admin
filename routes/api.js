@@ -26,7 +26,8 @@ router.get('/manager',managerController.all);
 router.post('/user',userController.insert);
 router.get('/user/:id',userController.single);
 router.put('/user/:id',userController.edit);
-router.get('/user',userController.selectAll);
+router.put('/user/recover/:id',userController.recover);
+router.get('/user',userController.all);
 router.delete('/user/:id',userController.delete);
 // router.get('/user/select',managerController.selectAll);
 

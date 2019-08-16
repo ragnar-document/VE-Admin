@@ -2,17 +2,10 @@
   <div>
     <div style="padding:10px;overflow:hidden;background:#eee">
       <h1 style="float:left;">课程列表</h1>
-      <el-button style="float:right;" size="mini" @click="addCourse"
-        >添加班级</el-button
-      >
+      <el-button style="float:right;" size="mini" @click="addCourse">添加课程</el-button>
     </div>
     <el-table
-      :data="
-        tableData.filter(
-          data =>
-            !search || data.name.toLowerCase().includes(search.toLowerCase())
-        )
-      "
+      :data="tableData"
       style="width: 100%"
       v-loading="loading"
       element-loading-text="拼命加载中"
@@ -66,8 +59,13 @@ export default {
       this.$router.push({ name: "courseInfo", params: { id } });
     },
     handleDelete(scope) {
-      let id = scope.row.id;
-      courseModel
+       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let id = scope.row.id;
+        courseModel
         .delete(id)
         .then(() => {
           this.render();
@@ -77,6 +75,12 @@ export default {
           console.log(err);
           this.$message.error("删除失败");
         });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });          
+      });
     }
   },
   components: {}

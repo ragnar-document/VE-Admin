@@ -2,9 +2,24 @@
   <div>
     <div style="padding:10px;overflow:hidden;background:#eee">
       <h1 style="float:left;">用户列表</h1>
-      <el-button style="float:right;" size="mini" @click="addUser"
-        >添加新用户</el-button
-      >
+      <el-button style="float:right;" size="mini" @click="addUser">添加新用户</el-button>
+      <el-popover
+      placement="left"
+      width="400"
+      trigger="click">
+      <el-table :data="recondDate">
+        <el-table-column label="名字" prop="name"> </el-table-column>
+        <el-table-column label="手机号" prop="phone"> </el-table-column>
+        <el-table-column>
+          <template slot-scope="scope">
+          <el-button type="text" @click="recover(scope)">
+          恢复
+          </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-button slot="reference" style="float:right;" size="mini">删除记录</el-button>
+    </el-popover>
     </div>
     <el-table
       :data="
@@ -38,6 +53,7 @@
       </el-table-column>
     </el-table>
     <el-pagination
+      v-show="numb >= 10"
       class="pageItem"
       layout="prev, pager, next"
       @current-change="handleCurrentChange"
@@ -56,8 +72,10 @@ export default {
     return {
       currentPage: 1,
       tableData: [],
+      recondDate: [],
       search: "",
       total: 0,
+      numb:0,
       loading: true
     };
   },
@@ -68,7 +86,10 @@ export default {
     render() {
       userModel.list().then(res => {
         this.tableData = res.data.data;
+        this.recondDate = res.data.pagination.recondDate;
+        console.log(res.data)
         let totalNum = res.data.pagination.total;
+        this.numb = res.data.data.length;
         this.total = totalNum;
         setTimeout(() => {
           this.loading = false;
@@ -78,12 +99,38 @@ export default {
     addUser() {
       this.$router.push({ name: "userAdd" });
     },
+    recover(e) {
+      let index = e.$index;
+      let recoverList = this.recondDate;
+      let recoverMainId = recoverList[index].id;
+
+      this.$confirm('恢复该删除用户, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+         userModel
+        .recover(recoverMainId)
+        .then(res => {
+          this.$message.success("恢复成功");
+           this.render();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });          
+      });
+    },
     handleCurrentChange(e) {
       let pageIndex = e;
-      console.log(pageIndex);
       userModel
         .list({ pageIndex })
         .then(res => {
+
           this.tableData = res.data.data;
         })
         .catch(err => {
@@ -95,10 +142,21 @@ export default {
       this.$router.push({ name: "userInfo", params: { id } });
     },
     handleDelete(scope) {
-      let id = scope.row.id;
-      userModel.delete(id).then(() => {
-        this.$message.success("删除成功");
-        this.render();
+      this.$confirm('危险动作, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let id = scope.row.id;
+        userModel.delete(id).then(() => {
+          this.$message.success("删除成功");
+          this.render();
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });          
       });
     }
   },

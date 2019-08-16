@@ -3,6 +3,7 @@ export default {
   login: PREFIX + "/login",
   user: PREFIX + "/user",
   userInfo: id => `${PREFIX}/user/${id}`,
+  userRecover: id => `${PREFIX}/user/recover/${id}`,
   payment: PREFIX + "/payment",
   course: PREFIX + "/course",
   courseInfo: id => `${PREFIX}/course/${id}`,

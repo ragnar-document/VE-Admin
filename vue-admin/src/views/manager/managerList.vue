@@ -12,8 +12,8 @@
       <el-table-column label="手机号" prop="phone"> </el-table-column>
       <el-table-column align="right">
         <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope)"
+          <el-button type="text" size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+          <el-button type="text" size="mini"  @click="handleDelete(scope)"
             >删除</el-button
           >
         </template>
@@ -53,9 +53,20 @@ export default {
       this.$router.push({ name: "managerInfo", params: { id } });
     },
     handleDelete(scope) {
-      let id = scope.row.id;
-      managerModel.delete(id).then(() => {
-        this.$message.success("删除成功"), this.render();
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let id = scope.row.id;
+        managerModel.delete(id).then(() => {
+          this.$message.success("删除成功"), this.render();
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });          
       });
     }
   },

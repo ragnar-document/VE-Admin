@@ -14,6 +14,9 @@ export default {
   update(id, params) {
     return request.put(API.userInfo(id), params);
   },
+  recover(id) {
+    return request.put(API.userRecover(id));
+  },
   delete(id) {
     return request.delete(API.userInfo(id));
   }

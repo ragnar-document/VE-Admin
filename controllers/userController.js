@@ -98,27 +98,7 @@ const userController = {
             })
         }
     },
-    // all:async function (req,res,next) {
-    //     try {
-    //         const all = await usersModel.softall();
-    //         res.json({code:200,datas:all})
-    //     } catch (error) {
-    //         console.log(error)
-    //         res.json({code:0,message:'系统错误'})
-    //     }
-    // },
-    delete:async function (req,res,next) {
-        let id = req.params.id;
-
-        try {
-            await usersModel.delete(id)
-            res.json({code:200,message:'编辑成功'})
-        } catch (error) {
-            console.log(error);
-            res.json({code:0,message:'系统错误'})
-        }
-    },
-    selectAll:async function(req,res,next){
+    all:async function (req,res,next) {
         let pageIndex = req.query.pageIndex || 1;//页码
         let pageSize = req.query.pageSize || 10; //数量
         //按手机号及名字筛选
@@ -131,13 +111,14 @@ const userController = {
 
 
         try {
-            let users = await usersModel
-            .pagination(pageSize,pageIndex,params)
-            .orderBy('id','desc');
+            let users = await usersModel.softall(pageSize,pageIndex,params)
 
             users.forEach(data=>{
                 data.created_at = formatDate(data.created_at)
             })
+
+            let recondDate = await usersModel.where({"isdeleted":1})
+
 
             let usersCount = await usersModel.count(params);
             let total = usersCount[0].total;
@@ -149,6 +130,7 @@ const userController = {
                         total: total,
                         pageIndex: pageIndex,
                         pageSize: pageSize,
+                        recondDate:recondDate
                     }
                 }
             })
@@ -157,6 +139,68 @@ const userController = {
             res.json({code:0,message:'系统错误'})
         }
     },
+    delete:async function (req,res,next) {
+        let id = req.params.id;
+
+        try {
+            await usersModel.delete(id)
+            res.json({code:200,message:'编辑成功'})
+        } catch (error) {
+            console.log(error);
+            res.json({code:0,message:'系统错误'})
+        }
+    },
+
+    recover:async function (req,res,next) {
+        let id = req.params.id;
+
+        try {
+            await usersModel.recover(id)
+            res.json({code:200,message:'恢复成功'})
+        } catch (error) {
+            console.log(error);
+            res.json({code:0,message:'系统错误'})
+        }
+    },
+    // selectAll:async function(req,res,next){
+    //     let pageIndex = req.query.pageIndex || 1;//页码
+    //     let pageSize = req.query.pageSize || 10; //数量
+    //     //按手机号及名字筛选
+    //     let name = req.query.name;
+    //     let phone = req.query.phone;;
+    //     let params = {};
+    //     if(name) params.name = name;
+    //     if(phone) params.phone = phone;
+
+
+
+    //     try {
+    //         let users = await usersModel
+    //         .pagination(pageSize,pageIndex,params)
+    //         .orderBy('id','desc');
+
+    //         users.forEach(data=>{
+    //             data.created_at = formatDate(data.created_at)
+    //         })
+
+    //         let usersCount = await usersModel.count(params);
+    //         let total = usersCount[0].total;
+    //         res.json({
+    //             code:200,
+    //             data:{
+    //                 data: users,
+    //                 pagination:{
+    //                     total: total,
+    //                     pageIndex: pageIndex,
+    //                     pageSize: pageSize,
+    //                 }
+    //             }
+    //         })
+    //     } catch (error) {
+    //         console.log(error)
+    //         res.json({code:0,message:'系统错误'})
+    //     }
+    // },
 }
 
 module.exports = userController;

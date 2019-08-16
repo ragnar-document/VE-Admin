@@ -39,7 +39,7 @@ const paymnetController = {
     },
     selectIndex:async function(req,res,next){
         let status = req.query.status;
-        let pageSize = req.query.pageSize || 20;
+        let pageSize = req.query.pageSize || 10;
         let pageIndex = req.query.pageIndex || 1;
         let startAt = req.query.start_at;
         let endAt = req.query.end_at;
