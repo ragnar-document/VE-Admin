@@ -56,7 +56,7 @@ const paymnetController = {
                 endAt:endAt
             })
             .leftJoin('users','payment.user_id','users.id')
-            .column('payment.id', 'payment.total', 'payment.user_id', 'payment.created_time','payment.remark', 'users.name')
+            .column('payment.id', 'payment.status','payment.total', 'payment.user_id', 'payment.created_time','payment.remark', 'users.name')
             .orderBy('id', 'desc');
 
             payment.forEach(data => data.created_time = formatTime(data.created_time));

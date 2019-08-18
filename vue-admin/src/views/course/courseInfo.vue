@@ -80,7 +80,7 @@ export default {
       });
   },
   methods: {
-    addCourse(formName) {
+    addCourse() {
       let id = Number(this.$route.params.id);
       let name = this.courseForm.name;
       let teacher_phone = this.courseForm.teacher_phone;
@@ -93,7 +93,7 @@ export default {
 
       courseModel
         .update(id, { name, teacher_phone, teacher, description })
-        .then(res => {
+        .then(() => {
           this.$message.success("保存成功");
           this.$router.replace({ name: "courseList" });
         });

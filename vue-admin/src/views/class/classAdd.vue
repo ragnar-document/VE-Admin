@@ -114,8 +114,7 @@ export default {
           start_at,
           end_at
         })
-        .then(res => {
-          console.log(res);
+        .then(() => {
           this.$router.replace({ name: "classList" });
           this.$message.success("创建成功");
         })
@@ -123,7 +122,7 @@ export default {
           this.$message.error("添加失败");
         });
     },
-    resetForm(formName) {
+    resetForm() {
       this.classForm = {
         name: "",
         description: "",

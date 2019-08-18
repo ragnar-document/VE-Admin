@@ -39,7 +39,7 @@
             <el-form-item label="用户余额(元)">
               <el-input
                 v-model="userForm.balance"
-                :disabled="disabled"
+                :disabled="true"
                 placeholder=""
               ></el-input>
             </el-form-item>
@@ -146,10 +146,15 @@ export default {
   created() {
     let pathId = Number(this.$route.params.id);
     userModel.single(pathId).then(res => {
-      console.log(res.datas.single);
       this.userForm = res.datas.single[0];
       this.tableData = res.datas.intro;
-      console.log(res.datas.intro);
+
+      if (res.datas.single[0].sex == 1) {
+        this.userForm.sex = "男";
+      } else {
+        this.userForm.sex = "女";
+      }
+
       let paymentTable = res.datas.payment;
       paymentTable.forEach(data => {
         if (data.status == 1) {
@@ -167,7 +172,6 @@ export default {
     },
     skipInfo() {
       let id = this.tableData[0].course_id;
-      console.log(id);
       this.$router.push({ name: "classInfo", params: { id } });
     },
     editItem() {
@@ -183,7 +187,7 @@ export default {
       console.log(newItem);
       userModel
         .update(pathId, newItem)
-        .then(res => {
+        .then(() => {
           this.disabled = true;
           this.$message.success("编辑成功");
         })

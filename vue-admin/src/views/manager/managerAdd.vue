@@ -4,10 +4,10 @@
     <el-form
       status-icon
       :model="managerForm"
+      :rules="rules"
       ref="managerForm"
       label-width="100px"
       class="demo-ruleForm"
-      :rules="rules"
     >
       <el-form-item label="用户名字" prop="name">
         <el-input v-model="managerForm.name" placeholder=""></el-input>
@@ -18,7 +18,6 @@
       <el-form-item label="密码" prop="password">
         <el-input v-model="managerForm.password" placeholder=""></el-input>
       </el-form-item>
-
 
       <el-form-item>
         <el-button type="primary" @click="addmanager()">提交</el-button>
@@ -37,7 +36,7 @@ export default {
       managerForm: {
         name: "",
         phone: "",
-        password: "",
+        password: ""
       },
       rules: {
         phone: [
@@ -52,13 +51,12 @@ export default {
           { required: true, message: "请输入密码", trigger: "blur" },
           {
             pattern: /^[\w_-]{6,16}$/,
-            message: "最短6位，最长16位 可以包含小写大母 [a-z] 和大写字母 [A-Z]可以包含数字 [0-9]可以包含下划线 [ _ ] 和减号 [ - ]",
+            message:
+              "最短6位，最长16位 可以包含小写大母 [a-z] 和大写字母 [A-Z]可以包含数字 [0-9]可以包含下划线 [ _ ] 和减号 [ - ]",
             trigger: "blur"
           }
         ],
-        name : [
-          { required: true, message: "请输入你的名字", trigger:"blur"}
-        ]
+        name: [{ required: true, message: "请输入你的名字", trigger: "blur" }]
       }
     };
   },
@@ -75,8 +73,7 @@ export default {
 
       managerModel
         .add({ name, phone, password })
-        .then(res => {
-          console.log(res);
+        .then(() => {
           this.$router.replace({ name: "managerList" });
           this.$message.success("创建成功");
         })

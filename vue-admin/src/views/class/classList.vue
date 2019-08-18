@@ -7,12 +7,7 @@
       >
     </div>
     <el-table
-      :data="
-        tableData.filter(
-          data =>
-            !search || data.name.toLowerCase().includes(search.toLowerCase())
-        )
-      "
+      :data="tableData"
       style="width: 100%"
       v-loading="loading"
       element-loading-text="拼命加载中"
@@ -24,9 +19,6 @@
       </el-table-column>
       <el-table-column label="课程状态" prop="status"> </el-table-column>
       <el-table-column align="right">
-        <template slot="header">
-          <el-input v-model="search" size="mini" placeholder="输入关键字搜索" />
-        </template>
         <template slot-scope="scope">
           <el-button type="text" size="mini" @click="handleEdit(scope)"
             >编辑</el-button
@@ -57,7 +49,6 @@ export default {
         let tableData = res.datas.data;
         tableData.forEach(data => {
           if (data.status == 1) {
-            console.log(1);
             data.status = "正在进行";
           } else if (data.status == 2) {
             data.status = "已完成";

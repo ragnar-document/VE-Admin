@@ -2,7 +2,9 @@
   <div>
     <div style="padding:10px;overflow:hidden;background:#eee">
       <h1 style="float:left;">课程列表</h1>
-      <el-button style="float:right;" size="mini" @click="addCourse">添加课程</el-button>
+      <el-button style="float:right;" size="mini" @click="addCourse"
+        >添加课程</el-button
+      >
     </div>
     <el-table
       :data="tableData"
@@ -59,28 +61,30 @@ export default {
       this.$router.push({ name: "courseInfo", params: { id } });
     },
     handleDelete(scope) {
-       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        let id = scope.row.id;
-        courseModel
-        .delete(id)
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
         .then(() => {
-          this.render();
-          this.$message.success("删除成功");
+          let id = scope.row.id;
+          courseModel
+            .delete(id)
+            .then(() => {
+              this.render();
+              this.$message.success("删除成功");
+            })
+            .catch(err => {
+              console.log(err);
+              this.$message.error("删除失败");
+            });
         })
-        .catch(err => {
-          console.log(err);
-          this.$message.error("删除失败");
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
         });
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        });          
-      });
     }
   },
   components: {}
