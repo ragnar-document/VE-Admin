@@ -164,7 +164,8 @@ const classControllers = {
     },
     addUser:async function(req,res,next){
         let user_id = req.body.user_id;
-        let class_id =  req.params.id;
+        let class_id = req.params.id;
+        console.log(user_id,class_id)
         let create_at = formatTime(new Date())
 
         try {
@@ -194,10 +195,10 @@ const classControllers = {
             await paymentModel
             .insert({ "user_id":user_id, "status":status, "total":total,"remark":remark,"created_time":create_at});
 
-
-            await userModel
-            .where({ id: user_id })
-            .increment({ balance: total })
+            //如果报班就把总结充值到余额
+            // await userModel
+            // .where({ id: user_id })
+            // .increment({ balance: total })
 
             res.json({code:200,message:'报班成功'})
             

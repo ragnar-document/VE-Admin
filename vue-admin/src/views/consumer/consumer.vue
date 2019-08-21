@@ -99,7 +99,6 @@ export default {
   watch: {
     "findModel.selectTime": function() {
       let selectTime = this.findModel.selectTime;
-      console.log(se∏lectTime);
       //监听清除事件防止element组件报错
       if (this.findModel.selectTime == null) {
         const end = new Date();

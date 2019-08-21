@@ -10,5 +10,14 @@ export default {
   },
   single(id) {
     return request.get(API.classInfo(id));
+  },
+  update(id, params) {
+    return request.put(API.classInfo(id), params);
+  },
+  addUser(id, params) {
+    return request.post(API.userApply(id), params);
+  },
+  clickName(id, params) {
+    return request.put(API.clickName(id), params);
   }
 };

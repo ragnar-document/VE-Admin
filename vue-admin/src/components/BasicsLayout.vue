@@ -44,6 +44,7 @@ export default {
       this.show = true;
     }, 1000);
   },
+  methods: {},
   components: {
     Sidebar,
     Breadcrumb

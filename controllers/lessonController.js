@@ -24,8 +24,9 @@ const lessonController = {
     updata:async function(req,res,next){
         let lesson_id = req.params.id;
         let user_id = req.body.user_id;
+        let status = req.body.status;
         let finish_at = formatDate(new Date())
-console.log(lesson_id,user_id)
+
 
         if (!user_id) {
             res.json({code:0,message:'缺少参数'})
@@ -34,23 +35,28 @@ console.log(lesson_id,user_id)
         try {
             let userLessonList = await userLessonModel.where({lesson_id,user_id});
             let userLessonItem = userLessonList[0];
-// console.log(userLessonList,123)
-// console.log(userLessonItem,345)
+
+
             if (!userLessonItem) {
                 res.json({code:0,message:'用户没有报班'})
             }
             
-            let lessonItem = await lessonModel.where({'id':lesson_id});
-            await userLessonModel.edit(userLessonItem.id,{status:2,finish_at:finish_at});
+            let lessonItem = await lessonModel.where({ 'id': lesson_id });
+            //user_lesson 表单生成数据
+            await userLessonModel.edit(userLessonItem.id, { status: status,finish_at:finish_at});
             let total = -lessonItem[0].price;
             
-            await paymentModel.insert({
-                status:2,
-                total:total,
-                created_time:finish_at,
-                user_id:user_id,
-                remark: '用户:' + lesson_id + '课程扣费'
-            })
+            //上课打卡才扣费
+            if (status == 2) {
+                await paymentModel.insert({
+                    status: 2,
+                    total: total,
+                    created_time: finish_at,
+                    user_id: user_id,
+                    remark: '用户:' + lesson_id + '课程扣费'
+                })    
+            }
+            
            await userModel.where({ id: user_id })
             .increment({ balance: total })
             res.json({code:200,message:'点名成功'})

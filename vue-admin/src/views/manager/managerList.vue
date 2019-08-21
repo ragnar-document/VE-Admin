@@ -15,9 +15,24 @@
           <el-button type="text" size="mini" @click="handleEdit(scope.row)"
             >编辑</el-button
           >
-          <el-button type="text" size="mini" @click="handleDelete(scope)"
+          <el-button type="text" size="mini" @click="deleteManager(scope.row)"
             >删除</el-button
           >
+          <el-dialog
+            :title="'此操作将无法恢复/'.concat(oldName)"
+            :visible.sync="centerDialogVisible"
+            modal
+            width="30%"
+            center
+          >
+            <span style="color:red;" v-if="awesome">请输入删除项的名字</span>
+            <span style="color:green;" v-else>输入正确</span>
+            <el-input v-model="newName" placeholder=""></el-input>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="centerDialogVisible = false">取 消</el-button>
+              <el-button type="primary" @click="sureDelete">确 定</el-button>
+            </span>
+          </el-dialog>
         </template>
       </el-table-column>
     </el-table>
@@ -30,14 +45,28 @@ import managerModel from "@/global/service/manager";
 export default {
   data() {
     return {
+      centerDialogVisible: false,
       currentPage: 1,
       tableData: [],
       search: "",
-      total: 0
+      total: 0,
+      oldName: "",
+      newName: "",
+      deleteId: "",
+      awesome: true
     };
   },
   created() {
     this.render();
+  },
+  watch: {
+    newName: function() {
+      if (this.newName == this.oldName) {
+        this.awesome = false;
+      } else {
+        this.awesome = true;
+      }
+    }
   },
   methods: {
     render() {
@@ -54,24 +83,25 @@ export default {
       let id = scope.id;
       this.$router.push({ name: "managerInfo", params: { id } });
     },
-    handleDelete(scope) {
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          let id = scope.row.id;
-          managerModel.delete(id).then(() => {
-            this.$message.success("删除成功"), this.render();
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
+    deleteManager(data) {
+      this.centerDialogVisible = true;
+      this.oldName = data.name;
+      this.deleteId = data.id;
+    },
+    sureDelete() {
+      let oldName = this.oldName;
+      let newName = this.newName;
+      let deleteId = this.deleteId;
+
+      if (oldName == newName) {
+        managerModel.delete(deleteId).then(() => {
+          this.$message.success("删除成功"), this.render();
         });
+        this.centerDialogVisible = false;
+      } else {
+        this.centerDialogVisible = false;
+        this.$message.error("与删除的项目名称不符合！");
+      }
     }
   },
   components: {}

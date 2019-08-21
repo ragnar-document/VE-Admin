@@ -18,6 +18,8 @@ const userAdd = () =>
   import(/* webpackChunkName: "userAdd" */ "@/views/user/userAdd.vue");
 const userInfo = () =>
   import(/* webpackChunkName: "userInfo" */ "@/views/user/userInfo.vue");
+const userApply = () =>
+  import(/* webpackChunkName: "userApply" */ "@/views/user/userApply.vue");
 const managerList = () =>
   import(
     /* webpackChunkName: "managerList" */ "@/views/manager/managerList.vue"
@@ -224,6 +226,16 @@ export default [
             meta: {
               breadcrumb: {
                 title: "用户详情"
+              }
+            }
+          },
+          {
+            path: "/userApply/:id",
+            name: "userApply",
+            component: userApply,
+            meta: {
+              breadcrumb: {
+                title: "用户报班"
               }
             }
           }

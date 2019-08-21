@@ -5,22 +5,22 @@
       <el-button style="float:right;" size="mini" @click="addUser"
         >添加新用户</el-button
       >
-      <el-popover placement="left" width="400" trigger="click">
-        <el-table :data="recondDate">
-          <el-table-column label="名字" prop="name"> </el-table-column>
-          <el-table-column label="手机号" prop="phone"> </el-table-column>
-          <el-table-column>
-            <template slot-scope="scope">
-              <el-button type="text" @click="recover(scope)">
-                恢复
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-button slot="reference" style="float:right;" size="mini"
-          >删除记录</el-button
-        >
-      </el-popover>
+      <el-badge :value="recondDate.length" class="item">
+        <el-popover placement="left" width="400" trigger="click">
+          <el-table :data="recondDate">
+            <el-table-column label="名字" prop="name"> </el-table-column>
+            <el-table-column label="手机号" prop="phone"> </el-table-column>
+            <el-table-column>
+              <template slot-scope="scope">
+                <el-button type="text" @click="recover(scope)">
+                  恢复
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-button slot="reference" size="mini">删除记录</el-button>
+        </el-popover>
+      </el-badge>
     </div>
     <el-table
       :data="
@@ -44,10 +44,25 @@
           <el-input v-model="search" size="mini" placeholder="输入关键字搜索" />
         </template>
         <template slot-scope="scope">
-          <el-button type="text" size="mini" @click="handleInfo(scope)"
+          <el-button
+            type="text"
+            size="mini"
+            icon="el-icon-user"
+            @click="handleApply(scope)"
+            >用户报班
+          </el-button>
+          <el-button
+            type="text"
+            size="mini"
+            icon="el-icon-edit-outline"
+            @click="handleInfo(scope)"
             >详情
           </el-button>
-          <el-button type="text" size="mini" @click="handleDelete(scope)"
+          <el-button
+            type="text"
+            size="mini"
+            icon="el-icon-delete"
+            @click="handleDelete(scope)"
             >删除</el-button
           >
         </template>
@@ -142,6 +157,10 @@ export default {
       let id = scope.row.id;
       this.$router.push({ name: "userInfo", params: { id } });
     },
+    handleApply(scope) {
+      let id = scope.row.id;
+      this.$router.push({ name: "userApply", params: { id } });
+    },
     handleDelete(scope) {
       this.$confirm("危险动作, 是否继续?", "提示", {
         confirmButtonText: "确定",
@@ -151,7 +170,11 @@ export default {
         .then(() => {
           let id = scope.row.id;
           userModel.delete(id).then(() => {
-            this.$message.success("删除成功");
+            this.$notify({
+              title: "删除成功",
+              message: "已经正常删除用户",
+              type: "success"
+            });
             this.render();
           });
         })
@@ -172,6 +195,10 @@ h1 {
   float: left;
 }
 .pageItem {
+  float: right;
+}
+.item {
+  margin-right: 20px;
   float: right;
 }
 </style>

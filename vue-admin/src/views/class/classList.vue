@@ -20,8 +20,8 @@
       <el-table-column label="课程状态" prop="status"> </el-table-column>
       <el-table-column align="right">
         <template slot-scope="scope">
-          <el-button type="text" size="mini" @click="handleEdit(scope)"
-            >编辑</el-button
+          <el-button type="primary" size="mini" @click="handleEdit(scope)"
+            >进入班级</el-button
           >
         </template>
       </el-table-column>

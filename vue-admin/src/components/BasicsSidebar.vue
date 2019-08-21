@@ -42,7 +42,6 @@
 
 <script>
 import router from "./../routes/router";
-import logo from "./../../public/logo.svg";
 export default {
   data() {
     return {

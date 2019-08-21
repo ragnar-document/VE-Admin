@@ -11,6 +11,7 @@ axios.interceptors.response.use(
 
 export default {
   post: function(url = "", data = {}, config) {
+    console.log(data, 1231231);
     return axios.post(url, data, config);
   },
 

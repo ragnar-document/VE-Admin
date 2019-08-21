@@ -93,7 +93,11 @@ export default {
         .add({ name, phone, sex, birthday, sms_name, sms_phone })
         .then(() => {
           this.$router.replace({ name: "userList" });
-          this.$message.success("创建成功");
+          this.$notify({
+            title: "创建成功",
+            message: "用户已经创建成功请查看",
+            type: "success"
+          });
         })
         .catch(() => {
           this.$message.error("添加失败");
