@@ -50,7 +50,7 @@ const classControllers = {
 
         let startAt = req.query.start_at;
         let endAt = req.query.end_at;
-        let filterColumn = (startAt && endAt) ? 'classes.end_at' : '';
+        let filterColumn = (startAt && endAt) ? 'class.end_at' : '';
 
 
     //搜索条件
@@ -62,13 +62,20 @@ const classControllers = {
 
         try {
             let classes = await classModel
-            .pagination(pageSize,pageIndex,params)
-            .orderBy('id','desc');
+                .pagination(pageSize, pageIndex, params, {
+                    column: filterColumn,
+                    startAt: startAt,
+                    endAt: endAt
+                })
+                .leftJoin('course', 'class.course_id', 'course.id')
+                .column('class.id', 'class.name', 'class.course_id', 'class.price', 'class.status',
+                    'class.start_at', 'class.end_at',
+                    { course_name: 'course.name' })
+                .orderBy('id','desc');
 
             classes.forEach(data => {
-                // console.log(data.start_at)
-                // data.start_at = formatTime(data.start_at)
-                // data.end_at = formatTime(data.end_at)
+                data.start_at = formatDate(data.start_at)
+                data.end_at = formatDate(data.end_at)
             });
 
             let classesCount = await classModel.count(params,{
@@ -76,6 +83,7 @@ const classControllers = {
                 startAt:startAt,
                 endAt:endAt
             });
+
             let total = classesCount[0].total;
 
             res.json({
@@ -149,18 +157,47 @@ const classControllers = {
                 data.date = data.date ? formatDate(data.date) : '-';
             })
 
+            let userLesson = await userLessonModel.where({ 'class_id': id })
+
+
             res.json({
                 code:200,
                 data:{
                     classes:classes,
                     classLess:lessons,
-                    classStudy:classStudy
+                    classStudy: classStudy,
+                    userLesson: userLesson
                 }
             })
         } catch (error) {
             console.log(error)
             res.json({code:0,message:'系统错误'})
         }
+    },
+    setTimeDate: async function (req, res, next) {
+        let id = req.params.id;
+        console.log(id,123132)
+        let params = req.body.params;
+
+        let classIdItem = await lessonModel.where({ 'class_id': id })
+        // classIdItem.forEach(data => {
+        //     let class_id = data.id
+        // })
+
+        try {
+            params.forEach(async data => {     
+                console.log(data.start_time)
+                let test = await lessonModel.insertTime(data.id, { start_time:data.start_time,end_time: data.end_time, status:data.status })
+                console.log(test)
+            })
+            res.json({code:200,message:'设置成功'})
+        } catch (error) {
+            console.log(error)
+            res.json({
+                code: 0
+            })
+        }
+
     },
     addUser:async function(req,res,next){
         let user_id = req.body.user_id;
@@ -170,9 +207,9 @@ const classControllers = {
 
         try {
             let lesson = await lessonModel.where({class_id})
-            let userLesson = lesson.map(data=>{
+            let userLesson = lesson.map((data,index) => {
                 return{
-                    lesson_id:data.id,
+                    lesson_id:index+=1,
                     user_id:user_id,
                     class_id:class_id
                 }

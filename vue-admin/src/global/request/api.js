@@ -12,5 +12,6 @@ export default {
   managerInfo: id => `${PREFIX}/manager/${id}`,
   class: PREFIX + "/class",
   classInfo: id => `${PREFIX}/class/${id}`,
-  clickName: id => `${PREFIX}/lesson/${id}/user`
+  clickName: id => `${PREFIX}/lesson/${id}/user`,
+  classSetTime: id => `${PREFIX}/class/${id}/course`
 };

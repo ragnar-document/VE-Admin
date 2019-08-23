@@ -50,6 +50,8 @@ router.get('/class',/*filterMiddle.filter,*/classController.selectAll);
 router.post('/class',/*filterMiddle.filter,*/classController.insert);
 //修改课程数量
 router.put('/class/:id',/*filterMiddle.filter,*/classController.edit);
+//修改课程时间
+router.put('/class/:id/course',/*filterMiddle.filter,*/classController.setTimeDate);
 //班级详情
 router.get('/class/:id',/*filterMiddle.filter,*/classController.show);
 //加入班级

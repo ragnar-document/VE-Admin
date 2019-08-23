@@ -54,6 +54,9 @@
                   :disabled="disabled"
                 ></el-input>
               </el-form-item>
+              <el-form-item label="课程单价">
+                {{ classForm.single_price }}/节
+              </el-form-item>
               <el-form-item label="课程课时总数">
                 <el-input
                   v-model="classForm.lesson_count"
@@ -133,17 +136,48 @@
       </el-tab-pane>
       <el-tab-pane label="班级课程安排" name="third">
         <el-main>
-          <el-table :data="calendar" border style="width: 100%">
-            <el-table-column prop="date" label="星期一" width="180">
+          <el-table
+            fit
+            :data="calendar"
+            border
+            style="width: 100%"
+            @cell-dblclick="dblclickTable"
+          >
+            <el-table-column prop="id" label="课" width="180">
             </el-table-column>
-            <el-table-column prop="name" label="星期二" width="180">
+            <el-table-column prop="start_time" label="开始时间" width="180">
+              <template slot-scope="{ row }">
+                <el-date-picker
+                  v-if="showEdit[row.index]"
+                  v-model="row.start_time"
+                  type="datetime"
+                  format="yyyy 年 MM 月 dd 日"
+                  value-format="yyyy-MM-dd"
+                  size="mini"
+                  @blur="saveEdit(row)"
+                  placeholder=""
+                ></el-date-picker>
+                <span v-if="!showEdit[row.index]">{{ row.start_time }}</span>
+              </template>
             </el-table-column>
-            <el-table-column prop="address" label="星期三"> </el-table-column>
-            <el-table-column prop="address" label="星期四"> </el-table-column>
-            <el-table-column prop="address" label="星期五"> </el-table-column>
-            <el-table-column prop="address" label="星期六"> </el-table-column>
-            <el-table-column prop="address" label="星期日"> </el-table-column>
+            <el-table-column prop="end_time" label="结束时间" width="180">
+            </el-table-column>
+            <el-table-column prop="status" label="状态"> </el-table-column>
           </el-table>
+          <!-- <vxe-table
+          auto-resize
+          border
+          resizable
+          show-overflow
+          @edit-closed="getTableData"
+          style="width:100%"
+          :data.sync="calendar"
+          :edit-config="{trigger: 'dblclick', mode: 'cell'}">
+          <vxe-table-column type="index" width="60"></vxe-table-column>
+          <vxe-table-column field="start_time" title="start_time" :edit-render="{name: 'input'}"></vxe-table-column>
+          <vxe-table-column field="end_time" title="end_time" :edit-render="{name: 'input'}"></vxe-table-column>
+          <vxe-table-column field="status" title="status" :edit-render="{name: 'input'}"></vxe-table-column>
+        </vxe-table> -->
         </el-main>
       </el-tab-pane>
       <el-tab-pane label="班级点名" name="four">
@@ -151,16 +185,29 @@
           >点击勾选为上课，不勾选默认为请假</el-divider
         >
         <el-main>
-          <el-checkbox-group v-model="studentData">
-            <el-checkbox
-              v-for="item in tableData"
-              :key="item.id"
-              style="margin:10px"
-              :label="item.id"
-              border
-              >{{ item.name }}</el-checkbox
-            >
-          </el-checkbox-group>
+          <el-card shadow="never">
+            <el-select v-model="lessonId" placeholder="请选择">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item"
+                :value="item"
+              >
+              </el-option>
+            </el-select>
+            <el-divider></el-divider>
+            <el-checkbox-group v-model="studentData">
+              <el-checkbox
+                v-for="item in tableData"
+                :key="item.id"
+                style="margin:10px"
+                :label="item.id"
+                border
+                >{{ item.name }}</el-checkbox
+              >
+            </el-checkbox-group>
+            <h2></h2>
+          </el-card>
           <el-divider></el-divider>
           <el-button type="primary" @click="clickName">点名</el-button>
         </el-main>
@@ -178,6 +225,7 @@ export default {
       show1: true,
       disabled: true,
       activeName: "first",
+      lessonId: "",
       classForm: {
         name: "",
         description: "",
@@ -186,23 +234,54 @@ export default {
         lesson_count: "",
         status: "",
         start_at: "",
-        end_at: ""
+        end_at: "",
+        single_price: ""
       },
       tableData: [],
       studentData: [],
-      calendar: []
+      calendar: [],
+      userLesson: [],
+      options: [],
+      showEdit: []
     };
   },
   created() {
     this.render();
   },
   methods: {
+    dblclickTable(row, column, cell, event) {
+      this.$set(this.showEdit, row.index, true);
+      console.log(row, column, cell, event);
+    },
+    saveEdit(row) {
+      /*第一个参数是你要改变的数组， 
+          第二个参数是你要改变数组中对应值的索引，
+          第三个参数是你要将这个值改成什么*/
+      this.$set(this.showEdit, row.index, false);
+      console.log(this.showEdit);
+    },
     render() {
       let id = Number(this.$route.params.id);
       classModel.single(id).then(res => {
         console.log(res);
+        this.calendar = res.data.classLess;
+        this.userLesson = res.data.userLesson;
+        res.data.classLess.forEach((data, index) => {
+          let id = index + 1;
+          this.calendar[index].id = id;
+        });
         this.classForm = res.data.classes[0];
         this.tableData = res.data.classStudy;
+        this.classForm.single_price =
+          res.data.classes[0].price / res.data.classes[0].lesson_count;
+        let arr = [];
+        res.data.userLesson.filter(data => {
+          arr.push(data.lesson_id);
+        });
+        arr = new Set(arr);
+        this.options = arr;
+
+        console.log(this.arr);
       });
     },
     editItem() {
@@ -211,6 +290,21 @@ export default {
       } else {
         this.disabled = true;
       }
+    },
+    getTableData() {
+      let class_id = Number(this.$route.params.id);
+      console.log(class_id);
+      let params = this.calendar;
+      console.log(params);
+      classModel
+        .setTime(class_id, { params })
+        .then(() => {
+          this.$message.success("编辑成功");
+        })
+        .catch(err => {
+          console.log(err);
+          this.$message.error("编辑失败");
+        });
     },
     addUser() {
       let id = Number(this.$route.params.id);
@@ -259,28 +353,33 @@ export default {
     },
     clickName() {
       let class_id = Number(this.$route.params.id);
+      let lesson_id = this.lessonId;
       let clickNameData = this.studentData;
       //上课发送
+      if (!lesson_id) {
+        return this.$message.error("请选择打卡的ID");
+      }
+
       clickNameData.forEach(data => {
         classModel
-          .clickName(class_id, { user_id: data, status: 2 })
+          .clickName(class_id, { user_id: data, lesson_id: lesson_id })
           .then(() => {});
       });
 
-      let clickNameDatas = [];
-      this.tableData.filter(datas => {
-        clickNameData.forEach(data => {
-          if (datas.id != data) {
-            clickNameDatas.push(datas.id);
-          }
-        });
-      });
+      // let clickNameDatas = [];
+      // this.tableData.filter(datas => {
+      //   clickNameData.forEach(data => {
+      //     if (datas.id != data) {
+      //       clickNameDatas.push(datas.id);
+      //     }
+      //   });
+      // });
       //请假发送
-      clickNameDatas.forEach(data => {
-        classModel
-          .clickName(class_id, { user_id: data, status: 1 })
-          .then(() => {});
-      });
+      // clickNameDatas.forEach(data => {
+      //   classModel
+      //     .clickName(class_id, { user_id: data, status: 1 })
+      //     .then(() => {});
+      // });
 
       this.$message.success("点名成功");
     },

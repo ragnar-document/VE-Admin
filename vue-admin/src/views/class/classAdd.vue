@@ -15,7 +15,7 @@
         <el-input
           type="textarea"
           v-model="classForm.description"
-          placeholder=""
+          placeholder="暂无详情"
         ></el-input>
       </el-form-item>
       <el-form-item label="课程 ID">
@@ -68,11 +68,11 @@ export default {
     return {
       classForm: {
         name: "",
-        description: "",
+        description: "暂无详情",
         course_id: "",
         price: "",
         lesson_count: "",
-        status: "",
+        status: "1",
         start_at: "",
         end_at: ""
       }

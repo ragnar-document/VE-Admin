@@ -134,11 +134,12 @@ export default {
       let classGather = [];
       this.checkedCities.filter(datas => {
         this.data.forEach(data => {
-          if (data == datas.course_id) {
+          if (data == datas.id) {
             classGather.push(datas);
           }
         });
       });
+      console.log(classGather);
       this.classGather = classGather;
       console.log(this.classGather);
       let total = null;

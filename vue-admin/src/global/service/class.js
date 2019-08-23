@@ -2,8 +2,8 @@ import request from "./../request/request.js";
 import API from "./../request/api.js";
 
 export default {
-  list() {
-    return request.get(API.class);
+  list(params) {
+    return request.get(API.class, params);
   },
   add(params) {
     return request.post(API.class, params);
@@ -19,5 +19,8 @@ export default {
   },
   clickName(id, params) {
     return request.put(API.clickName(id), params);
+  },
+  setTime(id, params) {
+    return request.put(API.classSetTime(id), params);
   }
 };
