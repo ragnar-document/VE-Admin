@@ -139,45 +139,57 @@
           <el-table
             fit
             :data="calendar"
+            :row-class-name="tableRowClassName"
             border
             style="width: 100%"
-            @cell-dblclick="dblclickTable"
+            @cell-click="dblclickTable"
           >
             <el-table-column prop="id" label="课" width="180">
             </el-table-column>
-            <el-table-column prop="start_time" label="开始时间" width="180">
-              <template slot-scope="{ row }">
+            <el-table-column label="开始时间" width="180">
+              <template slot-scope="scope">
                 <el-date-picker
-                  v-if="showEdit[row.index]"
-                  v-model="row.start_time"
+                  v-if="
+                    scope.row.index === tabClickIndex &&
+                      tabClickLabel === '开始时间'
+                  "
+                  v-model="scope.row.start_time"
                   type="datetime"
-                  format="yyyy 年 MM 月 dd 日"
-                  value-format="yyyy-MM-dd"
+                  format="yyyy-MM-dd HH:mm:ss"
+                  value-format="yyyy-MM-dd HH:mm:ss"
                   size="mini"
-                  @blur="saveEdit(row)"
+                  @blur="saveEdit"
                   placeholder=""
                 ></el-date-picker>
-                <span v-if="!showEdit[row.index]">{{ row.start_time }}</span>
+                <span v-else>{{ scope.row.start_time }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="end_time" label="结束时间" width="180">
+            <el-table-column label="结束时间" width="180">
+              <template slot-scope="scope">
+                <el-date-picker
+                  v-if="
+                    scope.row.index === tabClickIndex &&
+                      tabClickLabel === '结束时间'
+                  "
+                  v-model="scope.row.end_time"
+                  type="datetime"
+                  format="yyyy-MM-dd HH:mm:ss"
+                  value-format="yyyy-MM-dd HH:mm:ss"
+                  size="mini"
+                  @blur="saveEdit"
+                  placeholder=""
+                ></el-date-picker>
+                <span v-else>{{ scope.row.end_time }}</span>
+              </template>
             </el-table-column>
-            <el-table-column prop="status" label="状态"> </el-table-column>
+            <el-table-column label="状态">
+              <template slot-scope="scope">
+                <el-tag :type="scope.row.status === 1 ? 'success' : ''">
+                  {{ scope.row.status === 1 ? "已开始" : "未开始" }}</el-tag
+                >
+              </template>
+            </el-table-column>
           </el-table>
-          <!-- <vxe-table
-          auto-resize
-          border
-          resizable
-          show-overflow
-          @edit-closed="getTableData"
-          style="width:100%"
-          :data.sync="calendar"
-          :edit-config="{trigger: 'dblclick', mode: 'cell'}">
-          <vxe-table-column type="index" width="60"></vxe-table-column>
-          <vxe-table-column field="start_time" title="start_time" :edit-render="{name: 'input'}"></vxe-table-column>
-          <vxe-table-column field="end_time" title="end_time" :edit-render="{name: 'input'}"></vxe-table-column>
-          <vxe-table-column field="status" title="status" :edit-render="{name: 'input'}"></vxe-table-column>
-        </vxe-table> -->
         </el-main>
       </el-tab-pane>
       <el-tab-pane label="班级点名" name="four">
@@ -240,26 +252,56 @@ export default {
       tableData: [],
       studentData: [],
       calendar: [],
-      userLesson: [],
-      options: [],
-      showEdit: []
+      userLesson: [], //课数据
+      options: [], //点名
+      tabClickIndex: null, // 点击的单元格
+      tabClickLabel: "" // 当前点击的列名
     };
   },
   created() {
     this.render();
   },
   methods: {
+    tableRowClassName({ row, rowIndex }) {
+      // 把每一行的索引放进row
+      row.index = rowIndex;
+    },
     dblclickTable(row, column, cell, event) {
-      this.$set(this.showEdit, row.index, true);
-      console.log(row, column, cell, event);
+      console.log(123);
+      switch (column.label) {
+        case "开始时间":
+          this.tabClickIndex = row.index;
+          this.tabClickLabel = column.label;
+          break;
+        case "结束时间":
+          this.tabClickIndex = row.index;
+          this.tabClickLabel = column.label;
+          break;
+        case "状态":
+          this.tabClickIndex = row.index;
+          this.tabClickLabel = column.label;
+          break;
+        default:
+          return;
+      }
     },
-    saveEdit(row) {
-      /*第一个参数是你要改变的数组， 
-          第二个参数是你要改变数组中对应值的索引，
-          第三个参数是你要将这个值改成什么*/
-      this.$set(this.showEdit, row.index, false);
-      console.log(this.showEdit);
+    saveEdit() {
+      this.tabClickIndex = null;
+      this.tabClickLabel = "";
+      let class_id = Number(this.$route.params.id);
+      console.log(class_id);
+      let params = this.calendar;
+      classModel
+        .setTime(class_id, { params })
+        .then(() => {
+          this.$message.success("编辑成功");
+        })
+        .catch(err => {
+          console.log(err);
+          this.$message.error("编辑失败");
+        });
     },
+
     render() {
       let id = Number(this.$route.params.id);
       classModel.single(id).then(res => {
@@ -280,8 +322,6 @@ export default {
         });
         arr = new Set(arr);
         this.options = arr;
-
-        console.log(this.arr);
       });
     },
     editItem() {
@@ -290,21 +330,6 @@ export default {
       } else {
         this.disabled = true;
       }
-    },
-    getTableData() {
-      let class_id = Number(this.$route.params.id);
-      console.log(class_id);
-      let params = this.calendar;
-      console.log(params);
-      classModel
-        .setTime(class_id, { params })
-        .then(() => {
-          this.$message.success("编辑成功");
-        })
-        .catch(err => {
-          console.log(err);
-          this.$message.error("编辑失败");
-        });
     },
     addUser() {
       let id = Number(this.$route.params.id);
