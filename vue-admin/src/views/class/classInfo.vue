@@ -11,7 +11,7 @@
               <el-link
                 type="primary"
                 style="float:right;margin:10px;"
-                @click="show1 = !show1"
+                @click="fold = !fold"
                 >收起</el-link
               >
               <el-link
@@ -22,7 +22,7 @@
               >
             </div>
             <el-form
-              v-show="show1"
+              v-show="fold"
               status-icon
               :v-model="classForm"
               ref="classForm"
@@ -87,7 +87,7 @@
               </el-form-item>
 
               <el-form-item>
-                <el-button v-show="!disabled" type="primary" @click="addUser()"
+                <el-button v-show="!disabled" type="primary" @click="upDate()"
                   >提交</el-button
                 >
               </el-form-item>
@@ -99,7 +99,7 @@
         <el-main class="main-container">
           <el-card class="box-card" shadow="never">
             <template>
-              <el-table :data="tableData" style="width: 100%">
+              <el-table :data="classInfoData" style="width: 100%">
                 <el-table-column type="expand">
                   <template slot-scope="props">
                     <el-form
@@ -144,7 +144,7 @@
             style="width: 100%"
             @cell-click="dblclickTable"
           >
-            <el-table-column prop="id" label="课" width="180">
+            <el-table-column prop="lesson_id" label="课" width="180">
             </el-table-column>
             <el-table-column label="开始时间" width="180">
               <template slot-scope="scope">
@@ -153,7 +153,7 @@
                     scope.row.index === tabClickIndex &&
                       tabClickLabel === '开始时间'
                   "
-                  v-model="scope.row.start_time"
+                  v-model="upTable.start_time"
                   type="datetime"
                   format="yyyy-MM-dd HH:mm:ss"
                   value-format="yyyy-MM-dd HH:mm:ss"
@@ -161,7 +161,7 @@
                   @blur="saveEdit"
                   placeholder=""
                 ></el-date-picker>
-                <span v-else>{{ scope.row.start_time }}</span>
+                <span v-else>{{ scope.row.start_time}}</span>
               </template>
             </el-table-column>
             <el-table-column label="结束时间" width="180">
@@ -171,7 +171,7 @@
                     scope.row.index === tabClickIndex &&
                       tabClickLabel === '结束时间'
                   "
-                  v-model="scope.row.end_time"
+                  v-model="upTable.end_time"
                   type="datetime"
                   format="yyyy-MM-dd HH:mm:ss"
                   value-format="yyyy-MM-dd HH:mm:ss"
@@ -210,7 +210,7 @@
             <el-divider></el-divider>
             <el-checkbox-group v-model="studentData">
               <el-checkbox
-                v-for="item in tableData"
+                v-for="item in classInfoData"
                 :key="item.id"
                 style="margin:10px"
                 :label="item.id"
@@ -234,9 +234,9 @@ import classModel from "@/global/service/class";
 export default {
   data() {
     return {
-      show1: true,
-      disabled: true,
-      activeName: "first",
+      fold: true,     //判断是否折叠
+      disabled: true,   //判断是否打开输入框
+      activeName: "first",  //tabs默认显示第几项
       lessonId: "",
       classForm: {
         name: "",
@@ -249,11 +249,13 @@ export default {
         end_at: "",
         single_price: ""
       },
-      tableData: [],
+      classInfoData: [],
       studentData: [],
       calendar: [],
       userLesson: [], //课数据
       options: [], //点名
+      upTableId: '',
+      upTable: {},
       tabClickIndex: null, // 点击的单元格
       tabClickLabel: "" // 当前点击的列名
     };
@@ -266,8 +268,8 @@ export default {
       // 把每一行的索引放进row
       row.index = rowIndex;
     },
-    dblclickTable(row, column, cell, event) {
-      console.log(123);
+    dblclickTable(row, column) {
+      this.upTableId = row.id;  //双击时存储点击的单元格ID
       switch (column.label) {
         case "开始时间":
           this.tabClickIndex = row.index;
@@ -286,15 +288,20 @@ export default {
       }
     },
     saveEdit() {
-      this.tabClickIndex = null;
+      this.tabClickIndex = null;     //离开输入框后保存
       this.tabClickLabel = "";
-      let class_id = Number(this.$route.params.id);
-      console.log(class_id);
-      let params = this.calendar;
+
+      let lesson_id =  this.upTableId;    //获取点击课的id
+      let class_id = Number(this.$route.params.id);     //获取当前课的id
+
+      let params = this.upTable;  //修改后的值
+
       classModel
-        .setTime(class_id, { params })
+        .setTime(class_id,{'params':params,'lesson_id':lesson_id})
         .then(() => {
           this.$message.success("编辑成功");
+          this.upTable = {} //成功后清除数据
+          this.render()     //重新获取更新后的数据渲染上去
         })
         .catch(err => {
           console.log(err);
@@ -303,20 +310,18 @@ export default {
     },
 
     render() {
-      let id = Number(this.$route.params.id);
-      classModel.single(id).then(res => {
-        console.log(res);
-        this.calendar = res.data.classLess;
-        this.userLesson = res.data.userLesson;
+      let id = Number(this.$route.params.id);     //获取当前url的ID
+      classModel.single(id).then(res => {     //获取当前ID下的详细信息并且渲染上去
+        this.calendar = res.data.classLess;       //班级课信息
+        this.userLesson = res.data.userLesson;      //用户课信息
         res.data.classLess.forEach((data, index) => {
           let id = index + 1;
-          this.calendar[index].id = id;
+          this.calendar[index].lesson_id = id;      //把课程表的ID使用循环纠正
         });
         this.classForm = res.data.classes[0];
-        this.tableData = res.data.classStudy;
-        this.classForm.single_price =
-          res.data.classes[0].price / res.data.classes[0].lesson_count;
-        let arr = [];
+        this.classInfoData = res.data.classStudy;
+        this.classForm.single_price = res.data.classLess[0].price;  //课单价
+        let arr = [];       //点名下啦选择第几节课
         res.data.userLesson.filter(data => {
           arr.push(data.lesson_id);
         });
@@ -324,14 +329,14 @@ export default {
         this.options = arr;
       });
     },
-    editItem() {
+    editItem() {  //编辑打开输入事件
       if (this.disabled) {
         this.disabled = false;
       } else {
         this.disabled = true;
       }
     },
-    addUser() {
+    upDate() {   //更新用户数据时间
       let id = Number(this.$route.params.id);
       let name = this.classForm.name;
       let description = this.classForm.description;
@@ -376,7 +381,7 @@ export default {
           this.$message.error("添加失败");
         });
     },
-    clickName() {
+    clickName() {  //点名事件
       let class_id = Number(this.$route.params.id);
       let lesson_id = this.lessonId;
       let clickNameData = this.studentData;
@@ -392,7 +397,7 @@ export default {
       });
 
       // let clickNameDatas = [];
-      // this.tableData.filter(datas => {
+      // this.classInfoData.filter(datas => {
       //   clickNameData.forEach(data => {
       //     if (datas.id != data) {
       //       clickNameDatas.push(datas.id);
@@ -408,7 +413,7 @@ export default {
 
       this.$message.success("点名成功");
     },
-    resetForm() {
+    resetForm() {  //充值
       this.classForm = {
         name: "",
         description: "",

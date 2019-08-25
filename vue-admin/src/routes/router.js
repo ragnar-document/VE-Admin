@@ -48,7 +48,7 @@ export default [
     redirect: { name: "Home" },
     meta: {
       breadcrumb: {
-        title: "根目录",
+        title: "主页",
         replace: "/"
       }
     },
@@ -71,13 +71,15 @@ export default [
         path: "/classList",
         name: "classListRoot",
         component: { render: h => h("router-view") },
+        redirect: { name: "classList" },
         meta: {
           nav: {
             icon: "el-icon-s-grid",
             title: "班级"
           },
           breadcrumb: {
-            title: "班级"
+            title: "班级",
+            replace: true
           }
         },
         children: [
@@ -135,13 +137,15 @@ export default [
         path: "/courseList",
         name: "courseListRoot",
         component: { render: h => h("router-view") },
+        redirect: { name: "courseList" },
         meta: {
           nav: {
             icon: "el-icon-wallet",
             title: "课程"
           },
           breadcrumb: {
-            title: "课程"
+            title: "课程",
+            replace: true
           }
         },
         children: [
@@ -185,13 +189,15 @@ export default [
         path: "/userList",
         name: "userListRoot",
         component: { render: h => h("router-view") },
+        redirect: { name: "userList" },
         meta: {
           nav: {
             icon: "el-icon-s-custom",
             title: "用户"
           },
           breadcrumb: {
-            title: "用户"
+            title: "用户",
+            replace: true
           }
         },
         children: [
@@ -245,13 +251,15 @@ export default [
         path: "/managerList",
         name: "managerListRoot",
         component: { render: h => h("router-view") },
+        redirect: { name: "managerList" },
         meta: {
           nav: {
             icon: "el-icon-user",
             title: "管理员"
           },
           breadcrumb: {
-            title: "管理员"
+            title: "管理员",
+            replace: true
           }
         },
         children: [

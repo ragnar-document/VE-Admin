@@ -15,6 +15,7 @@
     "nprogress": "^0.2.0",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
+    "vue-trend-chart": "^0.14.4",
     "vxe-table": "^2.3.6",
     "xe-utils": "^2.0.10"
   },

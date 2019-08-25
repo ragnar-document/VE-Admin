@@ -94,6 +94,7 @@ export default {
   },
   created() {
     this.render();
+    console.log(123)
   },
   methods: {
     render() {

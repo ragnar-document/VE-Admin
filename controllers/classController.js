@@ -157,6 +157,7 @@ const classControllers = {
                 data.date = data.date ? formatDate(data.date) : '-';
             })
 
+
             let userLesson = await userLessonModel.where({ 'class_id': id })
 
 
@@ -176,20 +177,15 @@ const classControllers = {
     },
     setTimeDate: async function (req, res, next) {
         let id = req.params.id;
-        console.log(id,123132)
+        let lesson_id = req.body.lesson_id;
         let params = req.body.params;
+        console.log(id, params, lesson_id)
 
-        let classIdItem = await lessonModel.where({ 'class_id': id })
-        // classIdItem.forEach(data => {
-        //     let class_id = data.id
-        // })
+        // let classIdItem = await lessonModel.where({ 'class_id': id, "lesson_id": lesson_id })
+
 
         try {
-            params.forEach(async data => {     
-                console.log(data.start_time)
-                let test = await lessonModel.insertTime(data.id, { start_time:data.start_time,end_time: data.end_time, status:data.status })
-                console.log(test)
-            })
+            let test = await lessonModel.insertTime(lesson_id,params)
             res.json({code:200,message:'设置成功'})
         } catch (error) {
             console.log(error)
