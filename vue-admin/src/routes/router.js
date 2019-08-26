@@ -6,6 +6,8 @@ const classAdd = () =>
   import(/* webpackChunkName: "classAdd" */ "@/views/class/classAdd.vue");
 const classInfo = () =>
   import(/* webpackChunkName: "classInfo" */ "@/views/class/classInfo.vue");
+const className = () =>
+  import(/* webpackChunkName: "className" */ "@/views/class/className.vue");
 const courseAdd = () =>
   import(/* webpackChunkName: "courseAdd" */ "@/views/course/courseAdd.vue");
 const courseList = () =>
@@ -114,6 +116,16 @@ export default [
             meta: {
               breadcrumb: {
                 title: "班级详情"
+              }
+            }
+          },
+          {
+            path: "/class/lesson/:id",
+            name: "className",
+            component: className,
+            meta: {
+              breadcrumb: {
+                title: "点名"
               }
             }
           }

@@ -34,6 +34,7 @@ router.delete('/user/:id',/*filterMiddle.filter,*/userController.delete);
 /* payment 表 */
 router.post('/payment',/*filterMiddle.filter,*/paymentController.insert);
 router.get('/payment',/*filterMiddle.filter,*/paymentController.selectIndex);
+router.put('/user/:id/recharge',/*filterMiddle.filter,*/paymentController.insert);
 
 
 /* course 表 */
@@ -57,7 +58,8 @@ router.get('/class/:id',/*filterMiddle.filter,*/classController.show);
 //加入班级
 router.post('/class/:id/adduser',/*filterMiddle.filter,*/classController.addUser);
 //点名
-router.put('/lesson/:id/user',/*filterMiddle.filter,*/lessonController.updata);
+router.post('/lesson/:id/user',/*filterMiddle.filter,*/lessonController.updata);
+router.get('/lesson/:id',/*filterMiddle.filter,*/lessonController.show);
 //更改课程
 router.put('/lesson/:id',/*filterMiddle.filter,*/lessonController.edit);
 

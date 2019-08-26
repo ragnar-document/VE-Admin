@@ -126,6 +126,7 @@ const classControllers = {
     },
     show:async function(req,res,next){
         let id = req.params.id;
+
         try {
             let classes = await classModel.where({'class.id':id})
             .leftJoin('course','class.course_id','course.id')
@@ -185,7 +186,7 @@ const classControllers = {
 
 
         try {
-            let test = await lessonModel.insertTime(lesson_id,params)
+            let test = await lessonModel.edit(lesson_id,params)
             res.json({code:200,message:'设置成功'})
         } catch (error) {
             console.log(error)
@@ -199,19 +200,20 @@ const classControllers = {
         let user_id = req.body.user_id;
         let class_id = req.params.id;
         console.log(user_id,class_id)
-        let create_at = formatTime(new Date())
+        let created_at = formatTime(new Date())
 
         try {
             let lesson = await lessonModel.where({class_id})
-            let userLesson = lesson.map((data,index) => {
+            let userLesson = lesson.map(data => {
                 return{
-                    lesson_id:index+=1,
+                    lesson_id: data.id,
                     user_id:user_id,
                     class_id:class_id
                 }
             })
 
-            let classLesson = await userClassModel.where({user_id,class_id});
+            let classLesson = await userClassModel.where({ user_id, class_id });
+            console.log(classLesson)
             let judge = classLesson.length > 0;
 
             if(judge){
@@ -219,14 +221,14 @@ const classControllers = {
             }
 
             
-            await userClassModel.insert({user_id,class_id,create_at})
+            await userClassModel.insert({user_id,class_id,created_at})
             await userLessonModel.insert(userLesson)
             let totalList = await classModel.where({'course_id':class_id})
             let total = totalList[0].price;
             let status = 1;
             let remark = "报班成功课程金额"
             await paymentModel
-            .insert({ "user_id":user_id, "status":status, "total":total,"remark":remark,"created_time":create_at});
+            .insert({ "user_id":user_id, "status":status, "total":total,"remark":remark,"created_at":created_at});
 
             //如果报班就把总结充值到余额
             // await userModel

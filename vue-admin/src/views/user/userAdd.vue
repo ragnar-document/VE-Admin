@@ -8,27 +8,28 @@
       ref="userForm"
       label-width="100px"
       class="demo-ruleForm"
-      label-position="top"
+      style="width:50%"
+
     >
-      <el-form-item label="用户名字" prop="name" size="mini">
+      <el-form-item label="用户名字" prop="name">
         <el-input v-model="userForm.name"></el-input>
       </el-form-item>
-      <el-form-item label="用户号码" prop="phone" size="mini">
+      <el-form-item label="用户号码" prop="phone">
         <el-input v-model="userForm.phone"></el-input>
       </el-form-item>
-      <el-form-item label="紧急联系人" prop="name" size="mini">
+      <el-form-item label="紧急联系人" prop="name">
         <el-input v-model="userForm.sms_name"></el-input>
       </el-form-item>
-      <el-form-item label="紧急联系电话" prop="phone" size="mini">
+      <el-form-item label="紧急电话" prop="phone">
         <el-input v-model="userForm.sms_phone"></el-input>
       </el-form-item>
-      <el-form-item label="用户性别" size="mini">
+      <el-form-item label="用户性别">
         <el-radio-group v-model="userForm.sex">
           <el-radio label="1">男</el-radio>
           <el-radio label="2">女</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="用户生日" size="mini">
+      <el-form-item label="用户生日">
         <el-date-picker
           v-model="userForm.birthday"
           type="date"

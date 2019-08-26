@@ -17,10 +17,7 @@ export default {
   addUser(id, params) {
     return request.post(API.userApply(id), params);
   },
-  clickName(id, params) {
-    return request.put(API.clickName(id), params);
-  },
-  setTime(id, params) {
+  setLesson(id, params) {
     return request.put(API.classSetTime(id), params);
   }
 };

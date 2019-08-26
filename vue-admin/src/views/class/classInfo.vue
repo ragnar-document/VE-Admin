@@ -55,7 +55,7 @@
                 ></el-input>
               </el-form-item>
               <el-form-item label="课程单价">
-                {{ classForm.single_price }}/节
+                {{ classForm.price }}/节
               </el-form-item>
               <el-form-item label="课程课时总数">
                 <el-input
@@ -185,43 +185,18 @@
             <el-table-column label="状态">
               <template slot-scope="scope">
                 <el-tag :type="scope.row.status === 1 ? 'success' : ''">
-                  {{ scope.row.status === 1 ? "已开始" : "未开始" }}</el-tag
+                  {{ scope.row.status === 1 ? "已结束" : "未开始" }}</el-tag
+                >
+              </template>
+            </el-table-column>
+            <el-table-column label="操作">
+              <template slot-scope="scope">
+                <el-button type="text" @click="handleLink(scope.row)"
+                  >去点名</el-button
                 >
               </template>
             </el-table-column>
           </el-table>
-        </el-main>
-      </el-tab-pane>
-      <el-tab-pane label="班级点名" name="four">
-        <el-divider content-position="left"
-          >点击勾选为上课，不勾选默认为请假</el-divider
-        >
-        <el-main>
-          <el-card shadow="never">
-            <el-select v-model="lessonId" placeholder="请选择">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item"
-                :value="item"
-              >
-              </el-option>
-            </el-select>
-            <el-divider></el-divider>
-            <el-checkbox-group v-model="studentData">
-              <el-checkbox
-                v-for="item in classInfoData"
-                :key="item.id"
-                style="margin:10px"
-                :label="item.id"
-                border
-                >{{ item.name }}</el-checkbox
-              >
-            </el-checkbox-group>
-            <h2></h2>
-          </el-card>
-          <el-divider></el-divider>
-          <el-button type="primary" @click="clickName">点名</el-button>
         </el-main>
       </el-tab-pane>
     </el-tabs>
@@ -264,6 +239,9 @@ export default {
     this.render();
   },
   methods: {
+    handleLink(row) {
+      this.$router.push({ name: "className", params: { id: row.id, } });
+    },
     tableRowClassName({ row, rowIndex }) {
       // 把每一行的索引放进row
       row.index = rowIndex;
@@ -297,7 +275,7 @@ export default {
       let params = this.upTable;  //修改后的值
 
       classModel
-        .setTime(class_id,{'params':params,'lesson_id':lesson_id})
+        .setLesson(class_id,{'params':params,'lesson_id':lesson_id})
         .then(() => {
           this.$message.success("编辑成功");
           this.upTable = {} //成功后清除数据
@@ -320,7 +298,7 @@ export default {
         });
         this.classForm = res.data.classes[0];
         this.classInfoData = res.data.classStudy;
-        this.classForm.single_price = res.data.classLess[0].price;  //课单价
+console.log(res)
         let arr = [];       //点名下啦选择第几节课
         res.data.userLesson.filter(data => {
           arr.push(data.lesson_id);
@@ -380,38 +358,6 @@ export default {
         .catch(() => {
           this.$message.error("添加失败");
         });
-    },
-    clickName() {  //点名事件
-      let class_id = Number(this.$route.params.id);
-      let lesson_id = this.lessonId;
-      let clickNameData = this.studentData;
-      //上课发送
-      if (!lesson_id) {
-        return this.$message.error("请选择打卡的ID");
-      }
-
-      clickNameData.forEach(data => {
-        classModel
-          .clickName(class_id, { user_id: data, lesson_id: lesson_id })
-          .then(() => {});
-      });
-
-      // let clickNameDatas = [];
-      // this.classInfoData.filter(datas => {
-      //   clickNameData.forEach(data => {
-      //     if (datas.id != data) {
-      //       clickNameDatas.push(datas.id);
-      //     }
-      //   });
-      // });
-      //请假发送
-      // clickNameDatas.forEach(data => {
-      //   classModel
-      //     .clickName(class_id, { user_id: data, status: 1 })
-      //     .then(() => {});
-      // });
-
-      this.$message.success("点名成功");
     },
     resetForm() {  //充值
       this.classForm = {

@@ -14,6 +14,9 @@ export default {
   update(id, params) {
     return request.put(API.userInfo(id), params);
   },
+  userRecharge(id, params) {
+    return request.put(API.userRecharge(id), params);
+  },
   recover(id) {
     return request.put(API.userRecover(id));
   },

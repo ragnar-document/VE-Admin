@@ -7,6 +7,7 @@
       ref="managerForm"
       label-width="100px"
       class="demo-ruleForm"
+      style="width:50%"
     >
       <el-form-item label="用户名字">
         <el-input

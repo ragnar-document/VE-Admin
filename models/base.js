@@ -23,15 +23,10 @@ class Base {
     all(){
         return knex(this.table).select();
     }
-    insertTime(id, params) {
-        return knex(this.table).where('id','=',id).update(params)
-    }
     classInsertTime(id, params) {
         return knex(this.table).where('class_id', '=', id).update(params)
     }
-    // softall(params){
-    //     return knex(this.table).where(params).whereNull('isdeleted').select()
-    // }
+
     softall(pageSize = 20, pageIndex = 1, params={}, dateFilter={}){
         let offset = (pageIndex - 1)*pageSize;
         if (dateFilter.column) {

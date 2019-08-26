@@ -116,8 +116,40 @@
         </el-tab-pane>
         <el-tab-pane label="消费详情" name="third">
           <el-main class="main-container">
+
+            <el-button type="primary"   @click="dialogVisible = true" size="mini" style="float:right;margin:10px">充值</el-button>
+            <el-dialog
+              center
+              title=" 充值提示"
+              :visible.sync="dialogVisible"
+              width="30%"
+              :before-close="handleClose"
+              :fullscreen="true"
+              custom-class="dialog-content"
+              >
+
+              <el-input v-model="rechargeData.total" placeholder="输入充值金额"></el-input>
+              <el-input
+                type="textarea"
+                :rows="2"
+                placeholder="请输入备注"
+                v-model="rechargeData.remark">
+              </el-input>
+              <el-select v-model="rechargeData.status" placeholder="请选择" size="mini">
+                <el-option
+                  v-for="item in rechargeStatus"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                  </el-option>
+              </el-select>
+              <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="recharge">确 定</el-button>
+              </span>
+            </el-dialog>
             <el-table :data="paymentTable" border style="width: 100%">
-              <el-table-column prop="created_time" label="消费时间" width="180">
+              <el-table-column prop="created_at"  label="消费时间" width="180">
               </el-table-column>
               <el-table-column prop="remark" label="备注" width="180">
               </el-table-column>
@@ -143,7 +175,9 @@ export default {
     return {
       show1: true,
       disabled: true,
+      dialogVisible: false,
       activeName: "first",
+      rechargeData:{},
       userForm: {
         name: "",
         phone: "",
@@ -154,33 +188,48 @@ export default {
         balance: ""
       },
       tableData: [],
-      paymentTable: []
+      paymentTable: [],
+      rechargeStatus:[
+        {
+          value: '1',
+          label: '充值'
+        },
+        {
+          value: '3',
+          label: '赠送'
+        }
+      ]
     };
   },
   created() {
-    let pathId = Number(this.$route.params.id);
-    userModel.single(pathId).then(res => {
-      this.userForm = res.datas.single[0];
-      this.tableData = res.datas.intro;
-
-      if (res.datas.single[0].sex == 1) {
-        this.userForm.sex = "男";
-      } else {
-        this.userForm.sex = "女";
-      }
-
-      let paymentTable = res.datas.payment;
-      paymentTable.forEach(data => {
-        if (data.status == 1) {
-          data.status = "充值";
-        } else if (data.status == 2) {
-          data.status = "消费";
-        }
-      });
-      this.paymentTable = paymentTable;
-    });
+   this.render();
   },
   methods: {
+    render() {
+       let pathId = Number(this.$route.params.id);
+        userModel.single(pathId).then(res => {
+          this.userForm = res.datas.single[0];
+          this.tableData = res.datas.intro;
+
+          if (res.datas.single[0].sex == 1) {
+            this.userForm.sex = "男";
+          } else {
+            this.userForm.sex = "女";
+          }
+
+          let paymentTable = res.datas.payment;
+          paymentTable.forEach(data => {
+            if (data.status == 1) {
+              data.status = "充值";
+            } else if (data.status == 2) {
+              data.status = "消费";
+            } else if (data.status == 3) {
+              data.status = "赠送";
+            }
+          });
+          this.paymentTable = paymentTable;
+        });
+    },
     skipInfo() {
       let id = this.tableData[0].course_id;
       this.$router.push({ name: "classInfo", params: { id } });
@@ -205,13 +254,50 @@ export default {
         .catch(err => {
           console.log(err);
         });
-    }
+    },
+    recharge() {
+      this.dialogVisible = false;
+      let total = this.rechargeData.total;
+      let status = this.rechargeData.status;
+      let remark = this.rechargeData.remark;
+      let user_id = this.$route.params.id;
+
+      userModel
+      .userRecharge(user_id,{user_id,total,status,remark})
+      .then(()=>{
+        this.$message.success("充值成功");
+        this.render()
+      })
+    },
+     handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
+      }
   }
 };
 </script>
 
-<style>
+<style lang="less" scope>
 .box-card {
   width: 90%;
 }
+
+.dialog-content{
+  background-color: #a8dba8;
+  color: #fff;
+  .el-dialog__body{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0 auto;
+    height: 200px;
+    width: 300px;
+    
+  }
+}
+
 </style>

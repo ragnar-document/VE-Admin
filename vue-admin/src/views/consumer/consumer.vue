@@ -149,6 +149,7 @@ export default {
       console.log(params);
 
       consumerModel.list(params).then(res => {
+        console.log(res)
         this.tableData = res.datas.data;
         this.pagination.total = res.datas.total; //传递数据total
         this.loading = false;

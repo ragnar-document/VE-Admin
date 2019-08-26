@@ -4,6 +4,7 @@ export default {
   user: PREFIX + "/user",
   userInfo: id => `${PREFIX}/user/${id}`,
   userApply: id => `${PREFIX}/class/${id}/adduser`,
+  userRecharge: id => `${PREFIX}/user/${id}/recharge`,
   userRecover: id => `${PREFIX}/user/recover/${id}`,
   payment: PREFIX + "/payment",
   course: PREFIX + "/course",
@@ -12,6 +13,7 @@ export default {
   managerInfo: id => `${PREFIX}/manager/${id}`,
   class: PREFIX + "/class",
   classInfo: id => `${PREFIX}/class/${id}`,
-  clickName: id => `${PREFIX}/lesson/${id}/user`,
-  classSetTime: id => `${PREFIX}/class/${id}/course`
+  classSetTime: id => `${PREFIX}/class/${id}/course`,
+  lessonCall: id => `${PREFIX}/lesson/${id}/user`,
+  lessonItem: id => `${PREFIX}/lesson/${id}`
 };
