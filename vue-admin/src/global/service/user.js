@@ -1,5 +1,5 @@
-import request from "./request.js";
-import API from "./api.js";
+import request from "../request/request.js";
+import API from "./../request/api.js";
 
 export default {
   list(params) {
@@ -13,6 +13,12 @@ export default {
   },
   update(id, params) {
     return request.put(API.userInfo(id), params);
+  },
+  userRecharge(id, params) {
+    return request.put(API.userRecharge(id), params);
+  },
+  recover(id) {
+    return request.put(API.userRecover(id));
   },
   delete(id) {
     return request.delete(API.userInfo(id));

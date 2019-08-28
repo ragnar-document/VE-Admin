@@ -50,7 +50,7 @@ const classControllers = {
 
         let startAt = req.query.start_at;
         let endAt = req.query.end_at;
-        let filterColumn = (startAt && endAt) ? 'classes.end_at' : '';
+        let filterColumn = (startAt && endAt) ? 'class.end_at' : '';
 
 
     //搜索条件
@@ -62,13 +62,20 @@ const classControllers = {
 
         try {
             let classes = await classModel
-            .pagination(pageSize,pageIndex,params)
-            .orderBy('id','desc');
+                .pagination(pageSize, pageIndex, params, {
+                    column: filterColumn,
+                    startAt: startAt,
+                    endAt: endAt
+                })
+                .leftJoin('course', 'class.course_id', 'course.id')
+                .column('class.id', 'class.name', 'class.course_id', 'class.price', 'class.status',
+                    'class.start_at', 'class.end_at','class.description',
+                    { course_name: 'course.name' })
+                .orderBy('id','desc');
 
             classes.forEach(data => {
-                // console.log(data.start_at)
-                // data.start_at = formatTime(data.start_at)
-                // data.end_at = formatTime(data.end_at)
+                data.start_at = formatDate(data.start_at)
+                data.end_at = formatDate(data.end_at)
             });
 
             let classesCount = await classModel.count(params,{
@@ -76,6 +83,7 @@ const classControllers = {
                 startAt:startAt,
                 endAt:endAt
             });
+
             let total = classesCount[0].total;
 
             res.json({
@@ -118,6 +126,7 @@ const classControllers = {
     },
     show:async function(req,res,next){
         let id = req.params.id;
+
         try {
             let classes = await classModel.where({'class.id':id})
             .leftJoin('course','class.course_id','course.id')
@@ -149,12 +158,17 @@ const classControllers = {
                 data.date = data.date ? formatDate(data.date) : '-';
             })
 
+
+            let userLesson = await userLessonModel.where({ 'class_id': id })
+
+
             res.json({
                 code:200,
                 data:{
                     classes:classes,
                     classLess:lessons,
-                    classStudy:classStudy
+                    classStudy: classStudy,
+                    userLesson: userLesson
                 }
             })
         } catch (error) {
@@ -162,22 +176,44 @@ const classControllers = {
             res.json({code:0,message:'系统错误'})
         }
     },
+    setTimeDate: async function (req, res, next) {
+        let id = req.params.id;
+        let lesson_id = req.body.lesson_id;
+        let params = req.body.params;
+        console.log(id, params, lesson_id)
+
+        // let classIdItem = await lessonModel.where({ 'class_id': id, "lesson_id": lesson_id })
+
+
+        try {
+            let test = await lessonModel.edit(lesson_id,params)
+            res.json({code:200,message:'设置成功'})
+        } catch (error) {
+            console.log(error)
+            res.json({
+                code: 0
+            })
+        }
+
+    },
     addUser:async function(req,res,next){
         let user_id = req.body.user_id;
-        let class_id =  req.params.id;
-        let create_at = formatTime(new Date())
+        let class_id = req.params.id;
+        console.log(user_id,class_id)
+        let created_at = formatTime(new Date())
 
         try {
             let lesson = await lessonModel.where({class_id})
-            let userLesson = lesson.map(data=>{
+            let userLesson = lesson.map(data => {
                 return{
-                    lesson_id:data.id,
+                    lesson_id: data.id,
                     user_id:user_id,
                     class_id:class_id
                 }
             })
 
-            let classLesson = await userClassModel.where({user_id,class_id});
+            let classLesson = await userClassModel.where({ user_id, class_id });
+            console.log(classLesson)
             let judge = classLesson.length > 0;
 
             if(judge){
@@ -185,19 +221,19 @@ const classControllers = {
             }
 
             
-            await userClassModel.insert({user_id,class_id,create_at})
+            await userClassModel.insert({user_id,class_id,created_at})
             await userLessonModel.insert(userLesson)
             let totalList = await classModel.where({'course_id':class_id})
             let total = totalList[0].price;
             let status = 1;
             let remark = "报班成功课程金额"
             await paymentModel
-            .insert({ "user_id":user_id, "status":status, "total":total,"remark":remark,"created_time":create_at});
+            .insert({ "user_id":user_id, "status":status, "total":total,"remark":remark,"created_at":created_at});
 
-
-            await userModel
-            .where({ id: user_id })
-            .increment({ balance: total })
+            //如果报班就把总结充值到余额
+            // await userModel
+            // .where({ id: user_id })
+            // .increment({ balance: total })
 
             res.json({code:200,message:'报班成功'})
             

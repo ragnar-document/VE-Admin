@@ -6,6 +6,8 @@ const classAdd = () =>
   import(/* webpackChunkName: "classAdd" */ "@/views/class/classAdd.vue");
 const classInfo = () =>
   import(/* webpackChunkName: "classInfo" */ "@/views/class/classInfo.vue");
+const className = () =>
+  import(/* webpackChunkName: "className" */ "@/views/class/className.vue");
 const courseAdd = () =>
   import(/* webpackChunkName: "courseAdd" */ "@/views/course/courseAdd.vue");
 const courseList = () =>
@@ -18,6 +20,8 @@ const userAdd = () =>
   import(/* webpackChunkName: "userAdd" */ "@/views/user/userAdd.vue");
 const userInfo = () =>
   import(/* webpackChunkName: "userInfo" */ "@/views/user/userInfo.vue");
+const userApply = () =>
+  import(/* webpackChunkName: "userApply" */ "@/views/user/userApply.vue");
 const managerList = () =>
   import(
     /* webpackChunkName: "managerList" */ "@/views/manager/managerList.vue"
@@ -31,7 +35,7 @@ const managerInfo = () =>
 const consumer = () =>
   import(/* webpackChunkName: "consumer" */ "@/views/consumer/consumer.vue");
 const Layout = () =>
-  import(/* webpackChunkName: "Layout" */ "@/components/Layout.vue");
+  import(/* webpackChunkName: "Layout" */ "@/components/BasicsLayout.vue");
 
 export default [
   {
@@ -46,7 +50,7 @@ export default [
     redirect: { name: "Home" },
     meta: {
       breadcrumb: {
-        title: "根目录",
+        title: "主页",
         replace: "/"
       }
     },
@@ -69,13 +73,15 @@ export default [
         path: "/classList",
         name: "classListRoot",
         component: { render: h => h("router-view") },
+        redirect: { name: "classList" },
         meta: {
           nav: {
             icon: "el-icon-s-grid",
             title: "班级"
           },
           breadcrumb: {
-            title: "班级"
+            title: "班级",
+            replace: true
           }
         },
         children: [
@@ -112,6 +118,16 @@ export default [
                 title: "班级详情"
               }
             }
+          },
+          {
+            path: "/class/lesson/:id",
+            name: "className",
+            component: className,
+            meta: {
+              breadcrumb: {
+                title: "点名"
+              }
+            }
           }
         ]
       },
@@ -133,13 +149,15 @@ export default [
         path: "/courseList",
         name: "courseListRoot",
         component: { render: h => h("router-view") },
+        redirect: { name: "courseList" },
         meta: {
           nav: {
             icon: "el-icon-wallet",
             title: "课程"
           },
           breadcrumb: {
-            title: "课程"
+            title: "课程",
+            replace: true
           }
         },
         children: [
@@ -183,13 +201,15 @@ export default [
         path: "/userList",
         name: "userListRoot",
         component: { render: h => h("router-view") },
+        redirect: { name: "userList" },
         meta: {
           nav: {
             icon: "el-icon-s-custom",
             title: "用户"
           },
           breadcrumb: {
-            title: "用户"
+            title: "用户",
+            replace: true
           }
         },
         children: [
@@ -226,6 +246,16 @@ export default [
                 title: "用户详情"
               }
             }
+          },
+          {
+            path: "/userApply/:id",
+            name: "userApply",
+            component: userApply,
+            meta: {
+              breadcrumb: {
+                title: "用户报班"
+              }
+            }
           }
         ]
       },
@@ -233,13 +263,15 @@ export default [
         path: "/managerList",
         name: "managerListRoot",
         component: { render: h => h("router-view") },
+        redirect: { name: "managerList" },
         meta: {
           nav: {
             icon: "el-icon-user",
             title: "管理员"
           },
           breadcrumb: {
-            title: "管理员"
+            title: "管理员",
+            replace: true
           }
         },
         children: [
@@ -262,10 +294,6 @@ export default [
             name: "managerAdd",
             component: managerAdd,
             meta: {
-              nav: {
-                icon: "el-icon-pie-chart",
-                title: "管理员添加"
-              },
               breadcrumb: {
                 title: "管理员添加"
               }

@@ -7,15 +7,28 @@
       ref="managerForm"
       label-width="100px"
       class="demo-ruleForm"
+      style="width:50%"
     >
       <el-form-item label="用户名字">
-        <el-input v-model="managerForm.name" placeholder="" :disabled="disabled"></el-input>
+        <el-input
+          v-model="managerForm.name"
+          placeholder=""
+          :disabled="disabled"
+        ></el-input>
       </el-form-item>
       <el-form-item label="用户号码">
-        <el-input v-model="managerForm.phone" placeholder="" :disabled="disabled"></el-input>
+        <el-input
+          v-model="managerForm.phone"
+          placeholder=""
+          :disabled="disabled"
+        ></el-input>
       </el-form-item>
       <el-form-item label="密码">
-        <el-input v-model="managerForm.password" placeholder="" :disabled="disabled"></el-input>
+        <el-input
+          v-model="managerForm.password"
+          placeholder=""
+          :disabled="disabled"
+        ></el-input>
       </el-form-item>
 
       <el-form-item>
@@ -27,27 +40,30 @@
 </template>
 
 <script>
-import managerModel from "./../../model/manager";
+import managerModel from "@/global/service/manager";
 
 export default {
   data() {
     return {
-      disabled:true,
-      managerForm: []
+      disabled: true,
+      managerForm: {}
     };
   },
   created() {
     let id = Number(this.$route.params.id);
-    managerModel.single(id).then(res=>{
-      console.log(res)
-      this.managerForm = res.data[0];
-    }).catch(err=>{
-      console.log(err)
-    })
+    managerModel
+      .single(id)
+      .then(res => {
+        console.log(res);
+        this.managerForm = res.data[0];
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
   methods: {
     handleEdit() {
-       if (this.disabled) {
+      if (this.disabled) {
         this.disabled = false;
       } else {
         this.disabled = true;
@@ -65,7 +81,7 @@ export default {
       }
 
       managerModel
-        .update(id,{ name, phone, password })
+        .update(id, { name, phone, password })
         .then(res => {
           console.log(res);
           this.$router.replace({ name: "managerList" });

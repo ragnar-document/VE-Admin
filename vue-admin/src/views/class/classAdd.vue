@@ -15,7 +15,7 @@
         <el-input
           type="textarea"
           v-model="classForm.description"
-          placeholder=""
+          placeholder="暂无详情"
         ></el-input>
       </el-form-item>
       <el-form-item label="课程 ID">
@@ -61,18 +61,18 @@
 </template>
 
 <script>
-import classModel from "./../../model/class";
+import classModel from "@/global/service/class.js";
 
 export default {
   data() {
     return {
       classForm: {
         name: "",
-        description: "",
+        description: "暂无详情",
         course_id: "",
         price: "",
         lesson_count: "",
-        status: "",
+        status: "1",
         start_at: "",
         end_at: ""
       }
@@ -114,8 +114,7 @@ export default {
           start_at,
           end_at
         })
-        .then(res => {
-          console.log(res);
+        .then(() => {
           this.$router.replace({ name: "classList" });
           this.$message.success("创建成功");
         })
@@ -123,7 +122,7 @@ export default {
           this.$message.error("添加失败");
         });
     },
-    resetForm(formName) {
+    resetForm() {
       this.classForm = {
         name: "",
         description: "",

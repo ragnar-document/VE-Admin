@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import courseModel from "./../../model/course";
+import courseModel from "@/global/service/course";
 
 export default {
   data() {
@@ -50,7 +50,7 @@ export default {
     };
   },
   methods: {
-    addCourse(formName) {
+    addCourse() {
       let name = this.courseForm.name;
       let teacher_phone = this.courseForm.teacher_phone;
       let teacher = this.courseForm.teacher;
@@ -62,12 +62,12 @@ export default {
 
       courseModel
         .add({ name, teacher_phone, teacher, description })
-        .then(res => {
+        .then(() => {
           this.$message.success("添加成功");
           this.$router.replace({ name: "courseList" });
         });
     },
-    resetForm(formName) {
+    resetForm() {
       this.courseForm = {
         name: "",
         teacher_phone: "",
