@@ -161,7 +161,7 @@
                   @blur="saveEdit"
                   placeholder=""
                 ></el-date-picker>
-                <span v-else>{{ scope.row.start_time}}</span>
+                <span v-else>{{ scope.row.start_time }}</span>
               </template>
             </el-table-column>
             <el-table-column label="结束时间" width="180">
@@ -209,9 +209,9 @@ import classModel from "@/global/service/class";
 export default {
   data() {
     return {
-      fold: true,     //判断是否折叠
-      disabled: true,   //判断是否打开输入框
-      activeName: "first",  //tabs默认显示第几项
+      fold: true, //判断是否折叠
+      disabled: true, //判断是否打开输入框
+      activeName: "first", //tabs默认显示第几项
       lessonId: "",
       classForm: {
         name: "",
@@ -229,10 +229,10 @@ export default {
       calendar: [],
       userLesson: [], //课数据
       options: [], //点名
-      upTableId: '',
+      upTableId: "",
       upTable: {},
       tabClickIndex: null, // 点击的单元格
-      tabClickLabel: "" // 当前点击的列名
+      tabClickLabel: "" // 当前点击的列名，
     };
   },
   created() {
@@ -240,14 +240,14 @@ export default {
   },
   methods: {
     handleLink(row) {
-      this.$router.push({ name: "className", params: { id: row.id, } });
+      this.$router.push({ name: "className", params: { id: row.id } });
     },
     tableRowClassName({ row, rowIndex }) {
       // 把每一行的索引放进row
       row.index = rowIndex;
     },
     dblclickTable(row, column) {
-      this.upTableId = row.id;  //双击时存储点击的单元格ID
+      this.upTableId = row.id; //双击时存储点击的单元格ID
       switch (column.label) {
         case "开始时间":
           this.tabClickIndex = row.index;
@@ -266,20 +266,19 @@ export default {
       }
     },
     saveEdit() {
-      this.tabClickIndex = null;     //离开输入框后保存
+      this.tabClickIndex = null; //离开输入框后保存
       this.tabClickLabel = "";
 
-      let lesson_id =  this.upTableId;    //获取点击课的id
-      let class_id = Number(this.$route.params.id);     //获取当前课的id
-
-      let params = this.upTable;  //修改后的值
+      let lesson_id = this.upTableId; //获取点击课的id
+      let class_id = Number(this.$route.params.id); //获取当前课的id
+      let params = this.upTable; //修改后的值
 
       classModel
-        .setLesson(class_id,{'params':params,'lesson_id':lesson_id})
+        .setLesson(class_id, { params: params, lesson_id: lesson_id })
         .then(() => {
           this.$message.success("编辑成功");
-          this.upTable = {} //成功后清除数据
-          this.render()     //重新获取更新后的数据渲染上去
+          this.upTable = {}; //成功后清除数据
+          this.render(); //重新获取更新后的数据渲染上去
         })
         .catch(err => {
           console.log(err);
@@ -288,18 +287,20 @@ export default {
     },
 
     render() {
-      let id = Number(this.$route.params.id);     //获取当前url的ID
-      classModel.single(id).then(res => {     //获取当前ID下的详细信息并且渲染上去
-        this.calendar = res.data.classLess;       //班级课信息
-        this.userLesson = res.data.userLesson;      //用户课信息
+      let id = Number(this.$route.params.id); //获取当前url的ID
+      classModel.single(id).then(res => {
+        //获取当前ID下的详细信息并且渲染上去
+        this.calendar = res.data.classLess; //班级课信息
+
+        this.userLesson = res.data.userLesson; //用户课信息
         res.data.classLess.forEach((data, index) => {
           let id = index + 1;
-          this.calendar[index].lesson_id = id;      //把课程表的ID使用循环纠正
+          this.calendar[index].lesson_id = id; //把课程表的ID使用循环纠正
         });
         this.classForm = res.data.classes[0];
         this.classInfoData = res.data.classStudy;
-console.log(res)
-        let arr = [];       //点名下啦选择第几节课
+        console.log(res);
+        let arr = []; //点名下啦选择第几节课
         res.data.userLesson.filter(data => {
           arr.push(data.lesson_id);
         });
@@ -307,14 +308,16 @@ console.log(res)
         this.options = arr;
       });
     },
-    editItem() {  //编辑打开输入事件
+    editItem() {
+      //编辑打开输入事件
       if (this.disabled) {
         this.disabled = false;
       } else {
         this.disabled = true;
       }
     },
-    upDate() {   //更新用户数据时间
+    upDate() {
+      //更新用户数据时间
       let id = Number(this.$route.params.id);
       let name = this.classForm.name;
       let description = this.classForm.description;
@@ -359,7 +362,8 @@ console.log(res)
           this.$message.error("添加失败");
         });
     },
-    resetForm() {  //充值
+    resetForm() {
+      //充值
       this.classForm = {
         name: "",
         description: "",
@@ -371,6 +375,9 @@ console.log(res)
         end_at: ""
       };
     }
+  },
+  components: {
+    // dblTable:dblTable
   }
 };
 </script>

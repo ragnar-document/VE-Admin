@@ -9,7 +9,6 @@
       label-width="100px"
       class="demo-ruleForm"
       style="width:50%"
-
     >
       <el-form-item label="用户名字" prop="name">
         <el-input v-model="userForm.name"></el-input>

@@ -3,6 +3,8 @@ var { phoneValid } = require('./../utils/validation');
 var usersModel = require('./../models/userModel.js');
 const userClassModel = require('./../models/userClassModel.js');
 const paymentModel = require('./../models/paymentModel.js');
+const authCode = require('./../utils/authCode.js');
+var axios = require('axios')
 
 
 const userController = {
@@ -98,12 +100,13 @@ const userController = {
             })
         }
     },
-    all:async function (req,res,next) {
+    all: async function (req, res, next) {
         let pageIndex = req.query.pageIndex || 1;//页码
         let pageSize = req.query.pageSize || 10; //数量
         //按手机号及名字筛选
         let name = req.query.name;
         let phone = req.query.phone;;
+        console.log(name,phone)
         let params = {};
         if(name) params.name = name;
         if(phone) params.phone = phone;
@@ -150,7 +153,6 @@ const userController = {
             res.json({code:0,message:'系统错误'})
         }
     },
-
     recover:async function (req,res,next) {
         let id = req.params.id;
 
@@ -162,45 +164,58 @@ const userController = {
             res.json({code:0,message:'系统错误'})
         }
     },
-    // selectAll:async function(req,res,next){
-    //     let pageIndex = req.query.pageIndex || 1;//页码
-    //     let pageSize = req.query.pageSize || 10; //数量
-    //     //按手机号及名字筛选
-    //     let name = req.query.name;
-    //     let phone = req.query.phone;;
-    //     let params = {};
-    //     if(name) params.name = name;
-    //     if(phone) params.phone = phone;
+    findOpen: async function (req, res, next) {
+        let secret = '30b1c48e78fde088b7211d8a19c4feb3';
+        let appId = 'wx77ddc4e838ac0a1f';
+        let code = req.query.code;
+        let userPhone = req.query.userPhone;
+        let url = `https://api.weixin.qq.com/sns/jscode2session?appid=${appId}&secret=${secret}&js_code=${code}&grant_type=authorization_code`
+
+        try {
+            let data = await axios.get(url);
+            let openid = data.data.openid;
+            let user = await usersModel.where({ phone: userPhone });
+            let username = user[0].name;
+            let userphone = user[0].phone;
+            let id = user[0].id;
+
+            let userClass = await userClassModel
+                .where({ 'user_id': id })
+                .leftJoin('class', 'user_class.class_id', 'class.id')
+
+            if (!user.length) {
+                res.json({ code: 0, message: '该用户没有注册'})
+                return   
+            }  
+        
+            if (user[0].open_id == null) {
+                let balance = user[0].balance;
+                await usersModel.edit(id, { open_id: openid })
+                let str = username + '\t' + userphone + '\t' + openid;
+                let token = authCode(str, 'ENCODE')
+                res.json({ code: 200, message: '成功登陆', token: token, userId: id, balance: balance, userClass: userClass})
+            } else {
+                let balance = user[0].balance;
+                let str = username + '\t' + userphone + '\t' + openid;
+                let token = authCode(str, 'ENCODE')
+                res.json({
+                    code: 200,
+                    message: '成功登陆',
+                    token: token,
+                    user_name: username,
+                    user_phone: userphone,
+                    userId: id,
+                    balance: balance,
+                    userClass: userClass
+                })
+            }
 
 
-
-    //     try {
-    //         let users = await usersModel
-    //         .pagination(pageSize,pageIndex,params)
-    //         .orderBy('id','desc');
-
-    //         users.forEach(data=>{
-    //             data.created_at = formatDate(data.created_at)
-    //         })
-
-    //         let usersCount = await usersModel.count(params);
-    //         let total = usersCount[0].total;
-    //         res.json({
-    //             code:200,
-    //             data:{
-    //                 data: users,
-    //                 pagination:{
-    //                     total: total,
-    //                     pageIndex: pageIndex,
-    //                     pageSize: pageSize,
-    //                 }
-    //             }
-    //         })
-    //     } catch (error) {
-    //         console.log(error)
-    //         res.json({code:0,message:'系统错误'})
-    //     }
-    // },
+        } catch (e) {
+            console.log(e)
+            res.json({code: 0, url})
+        }
+    }
 }
 
 module.exports = userController;

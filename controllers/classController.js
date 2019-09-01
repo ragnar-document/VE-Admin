@@ -138,15 +138,7 @@ const classControllers = {
                 data.end_at = formatDate(data.end_at)
             })
             
-            /*
-            * 班级关联课程
-            */
-            // let course_id = classes[0].course_id;
-
-            // let classCourse = await courseModel
-            // .where({"id":course_id})
-           
-            // console.log(classCourse)
+ 
 
             let classStudy = await userClassModel.where({'class_id':id})
             .leftJoin('users','user_class.user_id','users.id')

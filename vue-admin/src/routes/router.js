@@ -36,6 +36,8 @@ const consumer = () =>
   import(/* webpackChunkName: "consumer" */ "@/views/consumer/consumer.vue");
 const Layout = () =>
   import(/* webpackChunkName: "Layout" */ "@/components/BasicsLayout.vue");
+const ApplyLesson = () =>
+  import(/* webpackChunkName: "Layout" */ "@/views/ApplyLesson.vue");
 
 export default [
   {
@@ -310,6 +312,21 @@ export default [
             }
           }
         ]
+      },
+      {
+        path: "/applylesson",
+        name: "ApplyLesson",
+        component: ApplyLesson,
+        meta: {
+          nav: {
+            icon: "el-icon-user",
+            title: "请假管理"
+          },
+          breadcrumb: {
+            title: "请假管理",
+            replace: true
+          }
+        }
       }
     ]
   }

@@ -15,5 +15,7 @@ export default {
   classInfo: id => `${PREFIX}/class/${id}`,
   classSetTime: id => `${PREFIX}/class/${id}/course`,
   lessonCall: id => `${PREFIX}/lesson/${id}/user`,
-  lessonItem: id => `${PREFIX}/lesson/${id}`
+  lessonItem: id => `${PREFIX}/lesson/${id}`,
+  applyList: PREFIX + "/applyList",
+  applyListEdit: PREFIX + "/applyEdit"
 };

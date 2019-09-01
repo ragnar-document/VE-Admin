@@ -3,6 +3,7 @@ import API from "./../request/api.js";
 
 export default {
   list(params) {
+    console.log(API.user);
     return request.get(API.user, params);
   },
   add(params) {

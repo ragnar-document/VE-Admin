@@ -41,7 +41,7 @@
       <el-table-column label="消费时间" prop="created_at"> </el-table-column>
       <el-table-column label="类型">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 1" >充值</el-tag>
+          <el-tag v-if="scope.row.status === 1">充值</el-tag>
           <el-tag v-if="scope.row.status === 2" type="danger">消费</el-tag>
           <el-tag v-if="scope.row.status === 3" type="success">赠送</el-tag>
         </template>
@@ -147,7 +147,7 @@ export default {
       if (status) params.status = status;
 
       consumerModel.list(params).then(res => {
-        console.log(res)
+        console.log(res);
         this.tableData = res.datas.data;
         this.pagination.total = res.datas.total; //传递数据total
         this.loading = false;

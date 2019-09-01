@@ -32,20 +32,33 @@
         </div>
       </div>
       <div class="random">
-        <trend-chart 
-        :datasets="datasets" 
-        :grid="grid" 
-        :labels="labels" 
-        :min="0" 
-        :interactive="true" 
-        class="random-chart"></trend-chart>
-        <div id="pop" role="tooltip" ref="tooltip" class="tooltip" :class="{'is-active': tooltipData}">
+        <trend-chart
+          :datasets="datasets"
+          :grid="grid"
+          :labels="labels"
+          :min="0"
+          :interactive="true"
+          class="random-chart"
+        ></trend-chart>
+        <div
+          id="pop"
+          role="tooltip"
+          ref="tooltip"
+          class="tooltip"
+          :class="{ 'is-active': tooltipData }"
+        >
           <div class="tooltip-container" v-if="tooltipData">
-            <strong>{{labels.xLabels[tooltipData.index]}}</strong>
+            <strong>{{ labels.xLabels[tooltipData.index] }}</strong>
             <div class="tooltip-data">
-              <div class="tooltip-data-item tooltip-data-item--1">{{tooltipData.data[0]}}</div>
-              <div class="tooltip-data-item tooltip-data-item--2">{{tooltipData.data[1]}}</div>
-              <div class="tooltip-data-item tooltip-data-item--3">{{tooltipData.data[2]}}</div>
+              <div class="tooltip-data-item tooltip-data-item--1">
+                {{ tooltipData.data[0] }}
+              </div>
+              <div class="tooltip-data-item tooltip-data-item--2">
+                {{ tooltipData.data[1] }}
+              </div>
+              <div class="tooltip-data-item tooltip-data-item--3">
+                {{ tooltipData.data[2] }}
+              </div>
             </div>
           </div>
         </div>
@@ -98,25 +111,24 @@ export default {
 </script>
 
 <style lang="less">
-.card-list{
+.card-list {
   display: flex;
   justify-content: space-between;
   height: 80px;
-  .card-item{
+  .card-item {
     display: inline-flex;
     align-items: center;
     justify-content: space-around;
     width: 20%;
     height: 100%;
     background-color: #7fdfd4;
-    .card-item-img{
+    .card-item-img {
       height: 60px;
       width: 60px;
       background-color: #fbac91;
-      h1{
-
+      h1 {
       }
-      span{
+      span {
         font-weight: 200px;
       }
     }
@@ -125,7 +137,7 @@ export default {
 
 .random {
   width: 100%;
-  margin-top:40px;
+  margin-top: 40px;
   .vtc {
     height: 250px;
     font-size: 12px;

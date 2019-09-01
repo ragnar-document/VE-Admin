@@ -1,25 +1,25 @@
 <template>
   <div class="page-container">
     <div class="page-content" v-loading="loading">
-        <h3>课时信息</h3>
-        <el-form inline label-position="left" label-width="80px">
-          <el-form-item label="开始时间" style="width:240px;">
-            {{ lesson.start_time }}
-          </el-form-item>
-          <el-form-item label="结束时间" style="width:240px;">
-            {{ lesson.end_time }}
-          </el-form-item>
-          <el-form-item  style="width:280px;">
-            <el-select
-              v-model="lesson.status"
-              size="mini"
-              @change="handleChangeStatus"
-              placeholder="课时状态"
-            >
-              <el-option :label="'已结束'" :value="1"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-form>
+      <h3>课时信息</h3>
+      <el-form inline label-position="left" label-width="80px">
+        <el-form-item label="开始时间" style="width:240px;">
+          {{ lesson.start_time }}
+        </el-form-item>
+        <el-form-item label="结束时间" style="width:240px;">
+          {{ lesson.end_time }}
+        </el-form-item>
+        <el-form-item style="width:280px;">
+          <el-select
+            v-model="lesson.status"
+            size="mini"
+            @change="handleChangeStatus"
+            placeholder="课时状态"
+          >
+            <el-option :label="'已结束'" :value="1"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
 
       <h3>报名学员</h3>
       <el-table
@@ -57,7 +57,7 @@
 </template>
 
 <script type="text/javascript">
-import lessonModel from '@/global/service/lesson.js'
+import lessonModel from "@/global/service/lesson.js";
 import classModel from "@/global/service/class";
 
 export default {
@@ -76,27 +76,25 @@ export default {
   },
   methods: {
     getData() {
-     let id = this.$route.params.id;
-     lessonModel.list(id).then(res=>{
-       console.log(res)
-       this.users = res.data.users;
-       this.lesson = res.data.lesson;
-     })
+      let id = this.$route.params.id;
+      lessonModel.list(id).then(res => {
+        console.log(res);
+        this.users = res.data.users;
+        this.lesson = res.data.lesson;
+      });
     },
     handleChangeStatus() {
-     let id = this.$route.params.id;
-     console.log(this.lesson.status)
-     let params = {status: this.lesson.status}
-      classModel
-        .setLesson(id, {"params":params,"lesson_id":id})
-        .then(res => {
-          if (res.code === 200) {
-            this.$message.success("成功修改课时状态！");
-         }
+      let id = this.$route.params.id;
+      console.log(this.lesson.status);
+      let params = { status: this.lesson.status };
+      classModel.setLesson(id, { params: params, lesson_id: id }).then(res => {
+        if (res.code === 200) {
+          this.$message.success("成功修改课时状态！");
+        }
       });
     },
     handleSelectionChange(row) {
-     this.selectUsersId = row
+      this.selectUsersId = row
         .filter(data => !data.status)
         .map(data => data.id);
     },
@@ -105,25 +103,21 @@ export default {
       let selectUsersId = this.selectUsersId;
 
       if (!this.selectUsersId.length) {
-        return this.$message.error('还没选择点名用户');
-      };
+        return this.$message.error("还没选择点名用户");
+      }
 
-     try {
-        selectUsersId.forEach(async user_id=>{
-          await lessonModel.call(id,{user_id});
-          this.getData()
+      try {
+        selectUsersId.forEach(async user_id => {
+          await lessonModel.call(id, { user_id });
+          this.getData();
         });
-     } catch (error) {
-       console.log(error)
-     }
-
+      } catch (error) {
+        console.log(error);
+      }
     },
-    handleResetUsers() {
-    }
-  },
-
+    handleResetUsers() {}
+  }
 };
 </script>
 
-<style type="text/css" lang="less" scoped>
-</style>
+<style type="text/css" lang="less" scoped></style>
