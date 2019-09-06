@@ -1,5 +1,6 @@
 const applyModel = require('../models/applyLessonModel');
 const userLessonModel = require("../models/userLessonModel");
+
 var { formatTime, formatDate } = require('./../utils/date');
 
 const applyController = {
@@ -26,6 +27,9 @@ const applyController = {
         }
     },
     all: async function (req, res, next) {
+        let class_id = req.query.class_id;
+        let user_id = req.query.user_id;
+
         try {
             let datas = await applyModel.all()
                 .leftJoin('class', 'applylesson.class_id', '=', 'class.id')
@@ -37,10 +41,31 @@ const applyController = {
                     { user_id: 'users.id' },
                     { status: 'applylesson.status' }
                 );
-            console.log(datas)
+console.log(datas)
           
+            if (!class_id || !user_id) {
+                res.json({ code: 200, datas: datas })
+            } else {
+                let userLessonDatas = await userLessonModel.where({ "user_lesson.class_id": class_id, 'user_lesson.user_id': user_id })
+                    .leftJoin('lesson', 'lesson.id', 'user_lesson.lesson_id')
+                    .column(
+                        "lesson.date",
+                        'user_lesson.class_id',
+                        "user_lesson.user_id",
+                        'lesson.start_time',
+                        'lesson.end_time',
+                        'lesson.status',
+                        { userStatus: 'user_lesson.status' },
+                        { lesson_id: 'lesson.id' }
+                )
+                // userLessonDatas.forEach(data => {
+                //     data.date = formatTime(data.date)
+                // })
+                res.json({ code: 200, datas: datas, userLessonDatas: userLessonDatas })
+            }
+           
+            
 
-            res.json({ code: 200,datas:datas})
         } catch (error) {
             console.log(error)
             res.json({code:0,message:'系统错误'})
@@ -52,7 +77,7 @@ const applyController = {
         let status = req.body.status;
         let finish_at = formatDate(new Date())
 
-console.log(req.body)
+
         try {
             let userLessonId = await userLessonModel
                 .where({ user_id: user_id })

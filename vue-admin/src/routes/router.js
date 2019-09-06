@@ -1,3 +1,4 @@
+const web = () => import(/* webpackChunkName: "web" */ "@/views/web.vue");
 const Home = () => import(/* webpackChunkName: "Home" */ "@/views/Home.vue");
 const login = () => import(/* webpackChunkName: "login" */ "@/views/login.vue");
 const classList = () =>
@@ -44,6 +45,11 @@ export default [
     path: "/login",
     name: "login",
     component: login
+  },
+  {
+    path: "/web",
+    name: "web",
+    component: web
   },
   {
     path: "/",

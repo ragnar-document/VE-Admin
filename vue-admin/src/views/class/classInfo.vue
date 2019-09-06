@@ -146,6 +146,24 @@
           >
             <el-table-column prop="lesson_id" label="课" width="180">
             </el-table-column>
+              <el-table-column label="日期" width="180">
+              <template slot-scope="scope">
+                <el-date-picker
+                  v-if="
+                    scope.row.index === tabClickIndex &&
+                      tabClickLabel === '日期'
+                  "
+                  v-model="upTable.date"
+                  type="datetime"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                  size="mini"
+                  @blur="saveEdit"
+                  placeholder=""
+                ></el-date-picker>
+                <span v-else>{{ scope.row.date }}</span>
+              </template>
+            </el-table-column>
             <el-table-column label="开始时间" width="180">
               <template slot-scope="scope">
                 <el-date-picker
@@ -249,6 +267,10 @@ export default {
     dblclickTable(row, column) {
       this.upTableId = row.id; //双击时存储点击的单元格ID
       switch (column.label) {
+         case "日期":
+          this.tabClickIndex = row.index;
+          this.tabClickLabel = column.label;
+          break;
         case "开始时间":
           this.tabClickIndex = row.index;
           this.tabClickLabel = column.label;
@@ -291,7 +313,7 @@ export default {
       classModel.single(id).then(res => {
         //获取当前ID下的详细信息并且渲染上去
         this.calendar = res.data.classLess; //班级课信息
-
+  console.log(res.data.classLess)
         this.userLesson = res.data.userLesson; //用户课信息
         res.data.classLess.forEach((data, index) => {
           let id = index + 1;
@@ -299,7 +321,6 @@ export default {
         });
         this.classForm = res.data.classes[0];
         this.classInfoData = res.data.classStudy;
-        console.log(res);
         let arr = []; //点名下啦选择第几节课
         res.data.userLesson.filter(data => {
           arr.push(data.lesson_id);

@@ -16,7 +16,7 @@ router.get('/login', authController.login);
 // filterMiddle.filter
 
 //小程序登陆接口
-router.get('/wxrequest', userController.findOpen)
+router.post('/wxrequest', userController.findOpen)
 // 微信 请假
 router.post('/applylesson', applyLessonController.insert)
 router.get('/applyList', applyLessonController.all)

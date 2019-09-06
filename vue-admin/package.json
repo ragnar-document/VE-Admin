@@ -12,6 +12,7 @@
     "core-js": "^2.6.5",
     "cors": "^2.8.5",
     "element-ui": "^2.4.5",
+    "eslint-utils": "^1.4.2",
     "nprogress": "^0.2.0",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
