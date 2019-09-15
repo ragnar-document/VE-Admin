@@ -315,14 +315,12 @@ selectAll(pageIndex,pageSize,params={},){
 ## Vue后台页面
 
 主要部分使用elementUi堆砌成一个简约，美观的后台。
-
-![](https://github.com/ragnar-document/Document-dish/blob/master/images/admin.png?raw=true)
-
-![](https://github.com/ragnar-document/Document-dish/blob/master/images/admin1.png?raw=true)
-
-![](https://github.com/ragnar-document/Document-dish/blob/master/images/admin2.png?raw=true)
-
-![](https://github.com/ragnar-document/Document-dish/blob/master/images/admin3.png?raw=true)
-
-![](https://github.com/ragnar-document/Document-dish/blob/master/images/admin4.png?raw=true)
+![](https://github.com/ragnar-document/VE-Admin/blob/master/IMG/login.png?raw=true)
+![](https://github.com/ragnar-document/VE-Admin/blob/master/IMG/class.png?raw=true)
+![](https://github.com/ragnar-document/VE-Admin/blob/master/IMG/classInfo.png?raw=true)
+![](https://github.com/ragnar-document/VE-Admin/blob/master/IMG/classcourse.png?raw=true)
+![](https://github.com/ragnar-document/VE-Admin/blob/master/IMG/user.png?raw=true)
+![](https://github.com/ragnar-document/VE-Admin/blob/master/IMG/userInfo.png?raw=true)
+![](https://github.com/ragnar-document/VE-Admin/blob/master/IMG/userapply.png?raw=true)
+![](https://github.com/ragnar-document/VE-Admin/blob/master/IMG/jiesuan.png?raw=true)
 
