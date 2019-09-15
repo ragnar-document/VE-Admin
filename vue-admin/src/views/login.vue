@@ -58,7 +58,7 @@
 </template>
 
 <script>
-// import loginModel from "./../model/login";
+import loginModel from "./../global/service/login";
 
 export default {
   data() {
@@ -88,15 +88,19 @@ export default {
       this.$refs[smsFrom].validate(valid => {
         console.log(valid);
         if (valid) {
-          // loginModel
-          //   .login({
-          //     phone: this.smsFrom.phone,
-          //     password: this.smsFrom.password
-          //   })
-          //   .then(res => {
-          //     console.log(res);
-          //   });
-          this.$router.replace({ name: "Home" });
+          loginModel
+            .login({
+              phone: this.smsFrom.phone,
+              password: this.smsFrom.password
+            })
+            .then(res => {
+              if (res.code == 200) {
+                localStorage.setItem("token", res.data.token);
+                this.$router.replace({ name: "Home" });
+              }else if(res.code == 0){
+                this.$message.error('木有这位管理员哦！')
+              }
+            });
         }
       });
     }

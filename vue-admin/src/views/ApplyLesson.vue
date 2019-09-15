@@ -54,7 +54,7 @@ export default {
   created() {
     applyLesson.list().then(res => {
       this.applylesson = res.datas;
-      console.log(res)
+      console.log(res);
     });
   },
   methods: {

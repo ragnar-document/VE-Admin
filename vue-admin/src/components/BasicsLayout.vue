@@ -12,15 +12,13 @@
           <Breadcrumb
             style="display: inline-block;float: left;margin-top:20px;"
           />
-          <el-dropdown>
+          <el-dropdown @command="handleCommand">
             <i class="el-icon-s-operation" style="margin-right: 15px"></i>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>查看</el-dropdown-item>
-              <el-dropdown-item>新增</el-dropdown-item>
-              <el-dropdown-item>删除</el-dropdown-item>
+            <el-dropdown-menu  slot="dropdown" >
+              <el-dropdown-item command="logout">退出</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-          <span>王小虎</span>
+          <span>{{managerData.name}}</span>
         </el-header>
         <transition name="el-fade-in-linear">
           <el-main class="home-main" v-show="show">
@@ -35,16 +33,34 @@
 <script>
 import Breadcrumb from "./BasicsBreadcrumb.vue";
 import Sidebar from "./BasicsSidebar";
+import login from "./../global/service/login"
 export default {
   data: () => ({
-    show: false
+    show: false,
+    managerData:[]
   }),
   created() {
     setTimeout(() => {
       this.show = true;
     }, 1000);
+    this.render();
   },
-  methods: {},
+  methods: {
+    render(){
+      console.log(localStorage.getItem('token'))
+      let token = localStorage.getItem('token');
+      login.getManger(token).then(res=>{
+        console.log(res.data[0])
+        this.managerData = res.data[0];
+      })
+    },
+    handleCommand(command){
+      if (command == 'logout') {
+        localStorage.clear();
+        this.$router.replace({ name: 'login'});
+      }
+    }
+  },
   components: {
     Sidebar,
     Breadcrumb

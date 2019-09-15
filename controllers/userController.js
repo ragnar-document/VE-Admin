@@ -4,6 +4,7 @@ var usersModel = require('./../models/userModel.js');
 const userClassModel = require('./../models/userClassModel.js');
 const paymentModel = require('./../models/paymentModel.js');
 const authCode = require('./../utils/authCode.js');
+const configs = require('./../config');
 var axios = require('axios')
 
 
@@ -101,8 +102,10 @@ const userController = {
         let pageIndex = req.query.pageIndex || 1;//页码
         let pageSize = req.query.pageSize || 10; //数量
         let params = {};
-        if (name) params.name = name;
-        if (phone) params.phone = phone;
+        //通过数据库查找用户电话以及名字
+        //通过element插件能减少请求次数
+        // if (name) params.name = name;
+        // if (phone) params.phone = phone;
 
         try {
             let users = await usersModel.softall(pageSize, pageIndex, params)
@@ -153,11 +156,9 @@ const userController = {
         }
     },
     findOpen: async function (req, res, next) {
-
         let code = req.body.code;
-        // let code = req.query.code;
-        let secret = '30b1c48e78fde088b7211d8a19c4feb3';
-        let appId = 'wx77ddc4e838ac0a1f';
+        let secret = configs.wx.secret;
+        let appId = configs.wx.appId;
         let userPhone = req.body.userPhone;
         let url = `https://api.weixin.qq.com/sns/jscode2session?appid=${appId}&secret=${secret}&js_code=${code}&grant_type=authorization_code`
 
@@ -199,8 +200,6 @@ const userController = {
                     userClass: userClass
                 })
             }
-
-
         } catch (e) {
             console.log(e)
             res.json({ code: 0, message: '登陆失败' })

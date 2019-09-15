@@ -17,5 +17,6 @@ export default {
   lessonCall: id => `${PREFIX}/lesson/${id}/user`,
   lessonItem: id => `${PREFIX}/lesson/${id}`,
   applyList: PREFIX + "/applyList",
-  applyListEdit: PREFIX + "/applyEdit"
+  applyListEdit: PREFIX + "/applyEdit",
+  getManager: PREFIX + '/getManager'
 };

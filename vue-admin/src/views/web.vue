@@ -8,12 +8,8 @@
           <a href="javascript:;" class="follow-method-qq"></a>
         </div>
         <div class="page-header-site">
-          <div class="page-header-s">
-            <i class="i-site"></i>广州市增城区
-          </div>
-          <div class="page-header-p">
-            <i class="i-phone"></i>+1 000263678
-          </div>
+          <div class="page-header-s"><i class="i-site"></i>广州市增城区</div>
+          <div class="page-header-p"><i class="i-phone"></i>+1 000263678</div>
         </div>
       </div>
       <div class="page-header-main">
@@ -26,7 +22,9 @@
         </ul>
       </div>
       <div class="page-header-title">
-        <div class="page-header-title-sm">留音社凭借多年的教学和运营管理经验，成功缔造了独特的教育发展模式</div>
+        <div class="page-header-title-sm">
+          留音社凭借多年的教学和运营管理经验，成功缔造了独特的教育发展模式
+        </div>
         <h1>增城市内唯一一家多元素艺术培训中心</h1>
         <a href="javascript:;">了解更多</a>
       </div>
@@ -37,23 +35,26 @@
         <div class="page-classInfo-card">
           <div class="classInfo-card-img-d"></div>
           <p class="class-card-title">钢琴课</p>
-          <p
-            class="class-card-intro"
-          >Integer sit amet mattis quam, sit amet ultricies velit. Praesent ullamcorper dui turpis.</p>
+          <p class="class-card-intro">
+            Integer sit amet mattis quam, sit amet ultricies velit. Praesent
+            ullamcorper dui turpis.
+          </p>
         </div>
         <div class="page-classInfo-card">
           <div class="classInfo-card-img-m"></div>
           <p class="class-card-title">钢琴课</p>
-          <p
-            class="class-card-intro"
-          >Integer sit amet mattis quam, sit amet ultricies velit. Praesent ullamcorper dui turpis.</p>
+          <p class="class-card-intro">
+            Integer sit amet mattis quam, sit amet ultricies velit. Praesent
+            ullamcorper dui turpis.
+          </p>
         </div>
         <div class="page-classInfo-card">
           <div class="classInfo-card-img-p"></div>
           <p class="class-card-title">钢琴课</p>
-          <p
-            class="class-card-intro"
-          >Integer sit amet mattis quam, sit amet ultricies velit. Praesent ullamcorper dui turpis.</p>
+          <p class="class-card-intro">
+            Integer sit amet mattis quam, sit amet ultricies velit. Praesent
+            ullamcorper dui turpis.
+          </p>
         </div>
       </div>
     </div>
@@ -89,7 +90,9 @@
           </div>
           <div class="faculty-text-sm">顶级私教</div>
           <div class="faculty-text-bg">Mariana Noe</div>
-          <div class="faculty-intro">Lorem Ipsum has been the industry's standard since the 1500s.</div>
+          <div class="faculty-intro">
+            Lorem Ipsum has been the industry's standard since the 1500s.
+          </div>
         </div>
         <div class="page-main-faculty-item">
           <div class="page-main-faculty-logo">
@@ -97,7 +100,9 @@
           </div>
           <div class="faculty-text-sm">顶级私教</div>
           <div class="faculty-text-bg">Mariana Noe</div>
-          <div class="faculty-intro">Lorem Ipsum has been the industry's standard since the 1500s.</div>
+          <div class="faculty-intro">
+            Lorem Ipsum has been the industry's standard since the 1500s.
+          </div>
         </div>
         <div class="page-main-faculty-item">
           <div class="page-main-faculty-logo">
@@ -105,7 +110,9 @@
           </div>
           <div class="faculty-text-sm">顶级私教</div>
           <div class="faculty-text-bg">Mariana Noe</div>
-          <div class="faculty-intro">Lorem Ipsum has been the industry's standard since the 1500s.</div>
+          <div class="faculty-intro">
+            Lorem Ipsum has been the industry's standard since the 1500s.
+          </div>
         </div>
       </div>
     </div>
@@ -136,13 +143,13 @@ export default {
 };
 </script>
 
-<style lang='less'>
+<style lang="less">
 * {
   margin: 0;
   padding: 0;
 }
 .page-main .page-header-bg {
-  background: url('~@/assets/banner1.jpg');
+  background: url("~@/assets/banner1.jpg");
   background-position-x: center;
   background-position-y: bottom;
   background-repeat: no-repeat;
@@ -163,11 +170,16 @@ export default {
   font-size: 13px;
   color: #fff;
 }
-.page-main .page-header-bg .page-header .page-header-site .page-header-s .i-site {
+.page-main
+  .page-header-bg
+  .page-header
+  .page-header-site
+  .page-header-s
+  .i-site {
   display: inline-block;
   height: 16px;
   width: 16px;
-  background: url('~@/assets/zuobiao.png') no-repeat;
+  background: url("~@/assets/zuobiao.png") no-repeat;
   background-position: center;
   background-size: 100%;
   margin: 0 14px;
@@ -177,11 +189,16 @@ export default {
   font-size: 13px;
   color: #fff;
 }
-.page-main .page-header-bg .page-header .page-header-site .page-header-p .i-phone {
+.page-main
+  .page-header-bg
+  .page-header
+  .page-header-site
+  .page-header-p
+  .i-phone {
   display: inline-block;
   height: 16px;
   width: 16px;
-  background: url('~@/assets/phone.png') no-repeat;
+  background: url("~@/assets/phone.png") no-repeat;
   background-position: center;
   background-size: 100%;
   margin: 0 14px;
@@ -193,16 +210,20 @@ export default {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
-.page-main .page-header-bg .page-header .page-header-follow .page-header-follow-title {
+.page-main
+  .page-header-bg
+  .page-header
+  .page-header-follow
+  .page-header-follow-title {
   font-size: 14px;
   color: #fff;
 }
 .page-main .page-header-bg .page-header .page-header-follow .follow-method-wx {
   display: inline-block;
-  background: url('~@/assets/wx.png');
+  background: url("~@/assets/wx.png");
   background-size: 100%;
   background-position: center;
   width: 30px;
@@ -211,7 +232,7 @@ export default {
 }
 .page-main .page-header-bg .page-header .page-header-follow .follow-method-qq {
   display: inline-block;
-  background: url('~@/assets/qq.png');
+  background: url("~@/assets/qq.png");
   background-size: 100%;
   background-position: center;
   width: 30px;
@@ -223,8 +244,8 @@ export default {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
   height: 80px;
   line-height: 80px;
   width: 90%;
@@ -242,8 +263,8 @@ export default {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
   width: 400px;
   list-style: none;
 }
@@ -289,40 +310,60 @@ export default {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
 }
 .page-main .page-main-classInfo .page-classInfo-card-list .page-classInfo-card {
   text-align: center;
   width: 300px;
 }
-.page-main .page-main-classInfo .page-classInfo-card-list .page-classInfo-card .classInfo-card-img-d {
+.page-main
+  .page-main-classInfo
+  .page-classInfo-card-list
+  .page-classInfo-card
+  .classInfo-card-img-d {
   display: inline-block;
   width: 80px;
   height: 80px;
-  background: url('~@/assets/dance_icon.png') no-repeat;
+  background: url("~@/assets/dance_icon.png") no-repeat;
   background-size: 100%;
 }
-.page-main .page-main-classInfo .page-classInfo-card-list .page-classInfo-card .classInfo-card-img-m {
+.page-main
+  .page-main-classInfo
+  .page-classInfo-card-list
+  .page-classInfo-card
+  .classInfo-card-img-m {
   display: inline-block;
   width: 80px;
   height: 80px;
-  background: url('~@/assets/music_icon.png') no-repeat;
+  background: url("~@/assets/music_icon.png") no-repeat;
   background-size: 100%;
 }
-.page-main .page-main-classInfo .page-classInfo-card-list .page-classInfo-card .classInfo-card-img-p {
+.page-main
+  .page-main-classInfo
+  .page-classInfo-card-list
+  .page-classInfo-card
+  .classInfo-card-img-p {
   display: inline-block;
   width: 80px;
   height: 80px;
-  background: url('~@/assets/piano_icon.png') no-repeat;
+  background: url("~@/assets/piano_icon.png") no-repeat;
   background-size: 100%;
 }
-.page-main .page-main-classInfo .page-classInfo-card-list .page-classInfo-card .class-card-title {
+.page-main
+  .page-main-classInfo
+  .page-classInfo-card-list
+  .page-classInfo-card
+  .class-card-title {
   font-size: 26px;
   font-weight: 500;
   margin: 30px 0;
 }
-.page-main .page-main-classInfo .page-classInfo-card-list .page-classInfo-card .class-card-intro {
+.page-main
+  .page-main-classInfo
+  .page-classInfo-card-list
+  .page-classInfo-card
+  .class-card-intro {
   color: #999;
 }
 .page-main .page-main-studentInfo {
@@ -362,23 +403,32 @@ export default {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
 }
 .page-main .page-main-faculty .page-main-faculty-list .page-main-faculty-item {
   text-align: center;
   width: 280px;
 }
-.page-main .page-main-faculty .page-main-faculty-list .page-main-faculty-item .page-main-faculty-logo img {
+.page-main
+  .page-main-faculty
+  .page-main-faculty-list
+  .page-main-faculty-item
+  .page-main-faculty-logo
+  img {
   border-radius: 50%;
   border: 8px solid #fff;
   -webkit-box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
-          box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
   height: 160px;
   width: 160px;
   margin-bottom: 20px;
 }
-.page-main .page-main-faculty .page-main-faculty-list .page-main-faculty-item .faculty-text-sm {
+.page-main
+  .page-main-faculty
+  .page-main-faculty-list
+  .page-main-faculty-item
+  .faculty-text-sm {
   font-size: 0.67em;
   color: #fb4386;
   font-weight: 600;
@@ -386,14 +436,22 @@ export default {
   display: block;
   text-transform: uppercase;
 }
-.page-main .page-main-faculty .page-main-faculty-list .page-main-faculty-item .faculty-text-bg {
+.page-main
+  .page-main-faculty
+  .page-main-faculty-list
+  .page-main-faculty-item
+  .faculty-text-bg {
   color: #515156;
   margin-bottom: 0.8em;
   font-size: 1.2em;
   font-weight: 400;
   letter-spacing: 3px;
 }
-.page-main .page-main-faculty .page-main-faculty-list .page-main-faculty-item .faculty-intro {
+.page-main
+  .page-main-faculty
+  .page-main-faculty-list
+  .page-main-faculty-item
+  .faculty-intro {
   color: #999;
 }
 .page-main .page-main-school-intro {
@@ -411,10 +469,10 @@ export default {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-pack: distribute;
-      justify-content: space-around;
+  justify-content: space-around;
 }
 .page-main .page-main-school-intro .school-intro-content .school-intro-img {
-  background: url('~@/assets/s-icon.jpg') no-repeat;
+  background: url("~@/assets/s-icon.jpg") no-repeat;
   background-size: 100%;
   width: 390px;
   height: 580px;
@@ -437,5 +495,4 @@ export default {
   color: #888;
   line-height: 30px;
 }
-
 </style>

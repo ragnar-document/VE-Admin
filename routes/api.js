@@ -13,6 +13,7 @@ var applyLessonController = require('./../controllers/applyLessonController.js')
 
 /* GET users listing. */
 router.get('/login', authController.login);
+router.get('/getManager', authController.getManager);
 // filterMiddle.filter
 
 //小程序登陆接口
@@ -27,7 +28,6 @@ router.get('/manager/:id', /*filterMiddle.filter,*/ managerController.single);
 router.put('/manager/:id', /*filterMiddle.filter,*/ managerController.edit);
 router.delete('/manager/:id', /*filterMiddle.filter,*/ managerController.delete);
 router.get('/manager', /*filterMiddle.filter,*/ managerController.all);
-
 
 
 /* user 表 */

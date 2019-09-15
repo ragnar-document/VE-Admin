@@ -18,7 +18,7 @@
                 type="primary"
                 style="float:right;margin:10px;"
                 @click="editItem"
-                >编辑用户</el-link
+                >编辑</el-link
               >
             </div>
             <el-form
@@ -146,7 +146,7 @@
           >
             <el-table-column prop="lesson_id" label="课" width="180">
             </el-table-column>
-              <el-table-column label="日期" width="180">
+            <el-table-column label="日期" width="180">
               <template slot-scope="scope">
                 <el-date-picker
                   v-if="
@@ -267,7 +267,7 @@ export default {
     dblclickTable(row, column) {
       this.upTableId = row.id; //双击时存储点击的单元格ID
       switch (column.label) {
-         case "日期":
+        case "日期":
           this.tabClickIndex = row.index;
           this.tabClickLabel = column.label;
           break;
@@ -313,7 +313,7 @@ export default {
       classModel.single(id).then(res => {
         //获取当前ID下的详细信息并且渲染上去
         this.calendar = res.data.classLess; //班级课信息
-  console.log(res.data.classLess)
+        console.log(res.data.classLess);
         this.userLesson = res.data.userLesson; //用户课信息
         res.data.classLess.forEach((data, index) => {
           let id = index + 1;

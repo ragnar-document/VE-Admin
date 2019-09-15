@@ -6,7 +6,7 @@ export default {
     return request.get(API.applyList, params);
   },
   edit(params) {
-    console.log(params)
+    console.log(params);
     return request.put(API.applyListEdit, params);
   }
 };

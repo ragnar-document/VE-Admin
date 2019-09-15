@@ -172,9 +172,6 @@
             </el-table>
           </el-main>
         </el-tab-pane>
-        <el-tab-pane label="我的课程" name="fourth">
-          <el-main> </el-main>
-        </el-tab-pane>
       </el-tabs>
     </el-main>
   </el-container>
