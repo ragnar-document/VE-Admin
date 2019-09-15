@@ -47,7 +47,6 @@ export default {
   },
   methods: {
     render(){
-      console.log(localStorage.getItem('token'))
       let token = localStorage.getItem('token');
       login.getManger(token).then(res=>{
         console.log(res.data[0])

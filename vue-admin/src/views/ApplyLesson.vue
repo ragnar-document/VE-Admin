@@ -6,6 +6,7 @@
         <el-table-column prop="user_name" label="用户"> </el-table-column>
         <el-table-column prop="lesson_id" label="课程号"> </el-table-column>
         <el-table-column prop="class_name" label="班级"> </el-table-column>
+        <el-table-column prop="create_time" label="请假时间"> </el-table-column>
         <el-table-column label="状态">
           <template slot-scope="scope">
             <el-select v-model="scope.row.status" placeholder="请选择">

@@ -9,14 +9,14 @@ const applyController = {
         let class_id = req.body.class_id;
         let lesson_id = req.body.lesson_id;
         let status = req.body.status;
-        console.log(user_id, class_id, lesson_id)
+        let create_time = formatTime(new Date())
 
         if (!user_id || !class_id || !lesson_id || !status ) {
             return res.json({code:0,message:'参数不全'})
         }
 
         try {
-            await applyModel.insert({ user_id, class_id, lesson_id, status })
+            await applyModel.insert({ user_id, class_id, lesson_id, status, create_time })
             res.json({code:200,message:'成功添加'})
         } catch (error) {
             console.log(error)

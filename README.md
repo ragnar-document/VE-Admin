@@ -1,12 +1,17 @@
 # **[LiuYinShe]() Project ( 后台管理 )**
 
-## 项目地址
+[TOC]
 
-已上传 写完以后没有非常认真的去检查新手写的项目多少会没那么理想，可以提意见让我做的更好～～谢谢
+## 项目说明
+
+可以提意见让我做的更好～～谢谢
 
 ## 注意事项
 
 没有上传node——module文件 所以需要npm install 一下
+
+加密文件没有上传以及一些私密文件没有上传
+
 项目还在进程中很多没有完善，但是可以参考着思路自己起一个项目模仿
 
 
@@ -311,6 +316,72 @@ selectAll(pageIndex,pageSize,params={},){
 ```
 
 使用leftjoin方法连接users表匹配相同id，获取想要的值，使用orderby进行排序
+
+## 添加路由守卫
+
+在index中添加beforeEach进行拦截,如果你在登陆页并且登陆成功后跳转首页，如果在地址栏输入其他页面并且没有登陆跳转登陆页进行登陆
+
+- **to: Route**: 即将要进入的目标 [路由对象](https://router.vuejs.org/zh/api/#路由对象)
+- **from: Route**: 当前导航正要离开的路由
+- **next: Function**: 一定要调用该方法来 **resolve** 这个钩子。执行效果依赖 `next` 方法的调用参数。
+
+```javascript
+// eslint-disable-next-line
+appRouter.beforeEach((to, from, next) => {
+  NProgress.start();
+  let hasToken = localStorage.getItem('token') ? true : false;
+  if (to.name === 'login' && hasToken) {
+    next({name:'Home'})
+  }
+  if (to.name !== 'login' && !hasToken) {
+    next({ name:'login'})
+  }
+  next();
+});
+```
+
+
+
+## 登陆鉴权操作
+
+**在request文件下通过axios拦截器在头部上携带token发送至后端**
+
+[查看具体](https://github.com/ragnar-document/VE-Admin/blob/master/vue-admin/src/global/request/request.js)
+
+```javascript
+// 添加一个请求拦截器（ 一般用于鉴权 )
+axios.interceptors.request.use(
+  config => {
+    const newConfig = { ...config };
+    const TOKEN = localStorage.getItem('token');
+    if (TOKEN) {
+      newConfig.headers.Authorization = `${TOKEN}`;
+    }
+    return newConfig;
+  },
+  error => Promise.reject(error)
+);
+```
+
+**在middleware层进行过滤**
+
+1. 判断是否携带token来证明是否登陆
+2. 把token解构后发送到数据库中匹配查看是否存在该该管理员
+
+[文件过长点击跳转查看](https://github.com/ragnar-document/VE-Admin/blob/master/middleware/filterMiddle.js)
+
+## 退出设置
+
+清除token并且调整登陆页面
+
+```javascript
+ if (command == 'logout') {
+    localStorage.clear();
+    this.$router.replace({ name: 'login'});
+  }
+```
+
+
 
 ## Vue后台页面
 
